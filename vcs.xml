@@ -6,6 +6,10 @@
           <option name="url" value="https://github.com/wkjandroid/Cm.git" />
           <option name="userName" value="" />
         </UrlAndUserName>
+        <UrlAndUserName>
+          <option name="url" value="https://github.com/wkjandroid/fitnessliveprj.git" />
+          <option name="userName" value="" />
+        </UrlAndUserName>
       </list>
     </option>
     <option name="cloneParentDir" value="F:\javaEE\FitnessLive" />
