@@ -1,0 +1,36 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.3.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('org.springframework.boot:spring-boot-starter-jdbc')
+	compile group: 'com.github.axet', name: 'kaptcha', version: '0.0.9'
+	compile group: 'commons-httpclient', name: 'commons-httpclient', version: '3.1'
+	compile group: 'commons-codec', name: 'commons-codec', version: '1.4'
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '1.5.3.RELEASE'
+	compile group: 'com.alibaba', name: 'druid', version: '1.0.31'
+	compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.40'
+	compile 'com.alibaba:fastjson:1.2.33'
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+	compile("org.springframework.boot:spring-boot-starter-websocket:${springBootVersion}")
+}
