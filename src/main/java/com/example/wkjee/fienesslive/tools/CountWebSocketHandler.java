@@ -1,6 +1,5 @@
 package com.example.wkjee.fienesslive.tools;
 
-import com.alibaba.druid.support.json.JSONUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -8,64 +7,73 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
+import java.util.*;
+/**
+ * 该websocket主要是用来控制直播消息的连接
+ */
 @Component
 public class CountWebSocketHandler extends TextWebSocketHandler {
+    //存放当前全部在线人数
     private static long count = 0;
-    private static Map<String,WebSocketSession> sessionMap = new HashMap();
-
+    //存放直播用户和观众会话
+    private static Map<String,Map<String,WebSocketSession>> sessionMap = new HashMap();
+    //处理分发直播间的评论信息
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        Object parse = JSONUtils.parse(message.getPayload());
-        Collection<WebSocketSession> sessions = sessionMap.values();
-        for (WebSocketSession ws : sessions) {//广播
-            ws.sendMessage(message);
+
+        String str = message.getPayload();
+        System.out.println("------"+str);
+        String[] split = session.getUri().getPath().split("/");
+        if (split[4].contentEquals("live")){    //该会话是直播员会话，将信息分发给直播间
+            //获取该直播间的用户
+            transSendMessage(str, split[2]);
+            //解析获取到的直播信息
+           // LiveChattingMessage chattingMessage = JSON.parseObject(str,LiveChattingMessage.class);
+        }else{  //该用户为观看者,将收到的信息转发到直播间
+            transSendMessage(str, split[2]);
         }
-        System.out.println("收到消息"+session.getUri()+"---------");
-        session.sendMessage(new TextMessage(session.getUri()+",你是第" + (session.getId()+1) + "位访客"
-        +session.getUri().getHost())); //p2p
     }
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         super.afterConnectionEstablished(session);
-        sessionMap.put(session.getUri().getPath(),session);
-        System.out.println("连接已经建立"+sessionMap.size());
+        //获取连接用户名和连接目的（直播或观看直播）
+        ///websocket/liveaccount/watchaccount/live|watchlive
+        System.out.println("连接已经建立");
+        String [] livePersonInfo=session.getUri().getPath().split("/");
+        if (livePersonInfo[4].contentEquals("live")){   //直播
+            Map<String,WebSocketSession> createMap=new HashMap<>();
+            createMap.put(livePersonInfo[2],session);
+            sessionMap.put(livePersonInfo[2],createMap);
+            session.sendMessage(new TextMessage("success"));
+        }else if (livePersonInfo[4].contentEquals("watchlive")){    //观看直播
+            Map<String,WebSocketSession> createMap=sessionMap.get(livePersonInfo[2]);   //获取直播用户的全部观看session
+            if (null==createMap)
+                createMap=new HashMap<>();
+            createMap.put(livePersonInfo[3],session);
+            session.sendMessage(new TextMessage("success"));
+        }
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        if (null!=sessionMap.get(session.getUri().getPath()))
+        String[] dirs = session.getUri().getPath().split("/");
+        if (null!=sessionMap.get(dirs[2]))
         {
-            sessionMap.remove(session.getUri().getPath());
+            if (dirs[2].contentEquals(dirs[3])){    //直播员连接关闭
+                sessionMap.get(dirs[2]).clear();
+            }else { //观众连接关闭
+                sessionMap.get(dirs[2]).remove(dirs[3]);
+            }
         }
         System.out.println("连接关闭");
     }
-    /**
-     * 发送消息
-     * @author xiaojf 2017/3/2 11:43
-     */
-    public static void sendMessage(String username,String message) throws IOException {
-        sendMessage(Arrays.asList(username),Arrays.asList(message));
-    }
-    /**
-     * 发送消息，p2p 群发都支持
-     * @author xiaojf 2017/3/2 11:43
-     */
-    public static void sendMessage(Collection<String> acceptorList, Collection<String> msgList) throws IOException {
-        if (acceptorList != null && msgList != null) {
-            for (String acceptor : acceptorList) {
-                WebSocketSession session = sessionMap.get(acceptor);
-                if (session != null) {
-                    for (String msg : msgList) {
-                        session.sendMessage(new TextMessage(msg.getBytes()));
-                    }
-                }
-            }
+    //将信息遍历发送到直播间
+    private void transSendMessage(String str, String name) throws IOException {
+        Map<String, WebSocketSession> createMap = sessionMap.get(name);
+        Collection<WebSocketSession> values = createMap.values();
+        for (WebSocketSession session:values){
+            session.sendMessage(new TextMessage(str));
         }
     }
 }

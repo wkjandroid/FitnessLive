@@ -21,7 +21,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
     }
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(new CountWebSocketHandler(), "/websocket/*")
+        registry.addHandler(new CountWebSocketHandler(), "/websocket/*/*/*")    //直播account/watchaccount/aim
                 .addInterceptors(new HandshakeInterceptor());
     }
 }

@@ -51,24 +51,26 @@ public class CustomerLoginService {
     }
     public void  verifyUser(User loginUser,HttpServletRequest request){
         //现将之前的登录销毁
-        request.getSession().invalidate();
         Map<User,HttpSession> userMap= (Map<User, HttpSession>) request.
                 getServletContext().getAttribute("userMap");
         if (userMap.containsKey(loginUser)){
             HttpSession httpSession = userMap.get(loginUser);
-            httpSession.invalidate();
+            if (null!=httpSession.getAttribute("loginUser"))
+            {
+                httpSession.invalidate();
+            }
         }
         request.getSession().setAttribute("loginUser",loginUser);
+        userMap.put(loginUser,request.getSession());
     }
 
     public void quitLogin(User loginUser, HttpServletRequest request) {
-        request.getSession().invalidate();
-        Map<User,HttpSession> loginMap = (Map<User, HttpSession>)
-                request.getServletContext().getAttribute("loginMap");
-        if (loginMap.containsKey(loginUser)){
-            HttpSession httpSession = loginMap.get(loginUser);
+        Map<User,HttpSession> userMap = (Map<User, HttpSession>) request.getServletContext()
+                .getAttribute("userMap");
+        if (null!=userMap && userMap.containsKey(loginUser)){
+            HttpSession httpSession = userMap.get(loginUser);
             httpSession.invalidate();
-            loginMap.remove(loginUser);
+            userMap.remove(loginUser);
         }
     }
 

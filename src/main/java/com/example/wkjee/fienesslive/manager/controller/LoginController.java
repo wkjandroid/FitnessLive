@@ -19,7 +19,7 @@ import java.util.Map;
  * Created by wkj_pc on 2017/5/20.
  */
 @Controller
-@RequestMapping("/manager/login/")
+@RequestMapping("/manager/login")
 public class LoginController {
     @Autowired
     private DefaultKaptcha defaultKaptcha;

@@ -1,7 +1,6 @@
 package com.example.wkjee.fienesslive.customer.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONPObject;
 import com.example.wkjee.fienesslive.customer.service.CustomerLoginService;
 import com.example.wkjee.fienesslive.manager.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +22,8 @@ public class CustomerLoginController {
 
     @ResponseBody
     @RequestMapping(value = "/toLogin",method = RequestMethod.POST)
-    public String login(@RequestParam String user, HttpServletRequest request){
-        String  result;
+    public String login(@RequestParam(value = "user", defaultValue = "")String user , HttpServletRequest request){
+        String  result="";
         User loginUser = JSON.parseObject(user, User.class);
         if (loginUser.getToken().substring(0,3).contains("qq:")){
            result =String.valueOf(customerLoginService.qqLogin(loginUser,request));
@@ -39,9 +38,13 @@ public class CustomerLoginController {
     }
 
     @RequestMapping(value = "/quitLogin")
-    public void quitLogin(@RequestParam String user, HttpServletRequest request){
-        boolean  result=true;
+    @ResponseBody
+    public String quitLogin(@RequestParam String user, HttpServletRequest request){
+        System.out.println("你开始退出了！");
         User loginUser = JSON.parseObject(user, User.class);
+        if (null==loginUser)
+            return "";
         customerLoginService.quitLogin(loginUser,request);
+        return "";
     }
 }

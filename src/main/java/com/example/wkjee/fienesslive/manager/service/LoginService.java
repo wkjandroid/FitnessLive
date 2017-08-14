@@ -50,17 +50,19 @@ public class LoginService {
             return loginMap;
         }else{
             //shujukuyanzheng
-            if (null!=userDao.queryUserByAccountAndPassword(
-                    loginUser.getAccount(),loginUser.getPassword())){
-                //现将之前的登录销毁
-                request.getSession().invalidate();
+            if (null!=userDao.queryUserByAccountAndPassword(loginUser.getAccount(),loginUser.getPassword())){
+
                 Map<User,HttpSession> userMap= (Map<User, HttpSession>) request.
                         getServletContext().getAttribute("userMap");
                 if (userMap.containsKey(loginUser)){
                     HttpSession httpSession = userMap.get(loginUser);
-                    httpSession.invalidate();
+                    if (null!=httpSession.getAttribute("loginUser"))
+                    {
+                        httpSession.invalidate();
+                    }
                 }
                 request.getSession().setAttribute("loginUser",loginUser);
+                userMap.put(loginUser,request.getSession());
                 loginMap.put("result","1");
             }else {
                 loginMap.put("result",2);//输入不正确
