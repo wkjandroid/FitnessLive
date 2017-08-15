@@ -63,15 +63,13 @@ public class CustomerLoginService {
         request.getSession().setAttribute("loginUser",loginUser);
         userMap.put(loginUser,request.getSession());
     }
-
     public void quitLogin(User loginUser, HttpServletRequest request) {
         Map<User,HttpSession> userMap = (Map<User, HttpSession>) request.getServletContext()
                 .getAttribute("userMap");
-        if (null!=userMap && userMap.containsKey(loginUser)){
+        if (userMap.containsKey(loginUser)){
             HttpSession httpSession = userMap.get(loginUser);
             httpSession.invalidate();
             userMap.remove(loginUser);
         }
     }
-
 }

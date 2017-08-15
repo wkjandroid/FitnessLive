@@ -23,6 +23,9 @@ public class CountWebSocketHandler extends TextWebSocketHandler {
 
         String str = message.getPayload();
         System.out.println("------"+str);
+        if (null==str || ""==str){
+            return;
+        }
         String[] split = session.getUri().getPath().split("/");
         if (split[4].contentEquals("live")){    //该会话是直播员会话，将信息分发给直播间
             //获取该直播间的用户
@@ -66,7 +69,7 @@ public class CountWebSocketHandler extends TextWebSocketHandler {
                 sessionMap.get(dirs[2]).remove(dirs[3]);
             }
         }
-        System.out.println("连接关闭");
+        System.out.println("连接关闭"+status);
     }
     //将信息遍历发送到直播间
     private void transSendMessage(String str, String name) throws IOException {

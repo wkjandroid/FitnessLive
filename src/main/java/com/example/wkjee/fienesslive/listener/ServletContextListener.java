@@ -1,7 +1,6 @@
 package com.example.wkjee.fienesslive.listener;
 
 import com.example.wkjee.fienesslive.manager.domain.User;
-
 import javax.servlet.ServletContextEvent;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSession;
