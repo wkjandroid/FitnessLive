@@ -1,11 +1,14 @@
 package com.example.wkjee.fienesslive.customer.dao;
 
 import com.example.wkjee.fienesslive.manager.domain.User;
-import com.example.wkjee.fienesslive.tools.MyRowMapper;
+import com.example.wkjee.fienesslive.tools.DataSourceTools;
+import com.example.wkjee.fienesslive.tools.FansRowMapper;
+import com.example.wkjee.fienesslive.tools.UserRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.util.List;
 
 /**
@@ -17,7 +20,16 @@ public class CustomerDaoImp implements ICustomerDao {
     @Autowired
     private JdbcTemplate template;
     @Autowired
-    private MyRowMapper myRowMapper;
+    private UserRowMapper userRowMapper;
+
+    private JdbcTemplate fansTemplate=new JdbcTemplate(DataSourceTools.getDataSource());
+    private FansRowMapper fansRowMapper=new FansRowMapper();
+    @Override
+    public int getFansNumberByAccount(String account) {
+        String sql="SELECT * FROM fans WHERE f_account=?";
+        List query = fansTemplate.query(sql,new String []{account}, fansRowMapper);
+        return (query.size()>0)?query.size():0;
+    }
 
     @Override
     public boolean registerWeiboUser(User loginUser) {
@@ -31,14 +43,14 @@ public class CustomerDaoImp implements ICustomerDao {
     @Override
     public User getUserInfoByAccount(String account) {
         String sql="select * from user where account=?";
-        List query = template.query(sql, new String[]{account}, myRowMapper);
+        List query = template.query(sql, new String[]{account}, userRowMapper);
         return (query.size()>0)?((User)query.get(0)):null;
     }
 
     @Override
     public boolean getUserByAccountAndPwd(User loginUser) {
         String sql="select * from user where account=? and password=?";
-        List query = template.query(sql, new String[]{loginUser.getAccount(), loginUser.getPassword()}, myRowMapper);
+        List query = template.query(sql, new String[]{loginUser.getAccount(), loginUser.getPassword()}, userRowMapper);
         return (query.size()>0)?true:false;
     }
 
@@ -55,7 +67,7 @@ public class CustomerDaoImp implements ICustomerDao {
     @Override
     public boolean checkUserExist(String account) {
         String sql="select * from user where account=?";
-        List query = template.query(sql, new String[]{account}, myRowMapper);
+        List query = template.query(sql, new String[]{account}, userRowMapper);
         return (query.size()>0)?true:false;
     }
 

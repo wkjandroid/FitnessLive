@@ -18,4 +18,6 @@ public interface ICustomerDao {
     User getUserInfoByAccount(String account);
 
     boolean registerWeiboUser(User loginUser);
+
+    int getFansNumberByAccount(String account);
 }

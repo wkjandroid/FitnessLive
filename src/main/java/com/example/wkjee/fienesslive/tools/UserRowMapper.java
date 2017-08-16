@@ -4,7 +4,6 @@ import com.example.wkjee.fienesslive.manager.domain.User;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -12,7 +11,7 @@ import java.sql.SQLException;
  * Created by wkj_pc on 2017/6/17.
  */
 @Repository
-public  class MyRowMapper implements RowMapper {
+public  class UserRowMapper implements RowMapper {
     /** sql的行映射*/
     @Override
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {

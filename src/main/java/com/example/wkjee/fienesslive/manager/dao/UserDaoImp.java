@@ -1,7 +1,7 @@
 package com.example.wkjee.fienesslive.manager.dao;
 
 import com.example.wkjee.fienesslive.manager.domain.User;
-import com.example.wkjee.fienesslive.tools.MyRowMapper;
+import com.example.wkjee.fienesslive.tools.UserRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -17,12 +17,12 @@ public class UserDaoImp implements IUserDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
    @Resource
-    private MyRowMapper myRowMapper;
+    private UserRowMapper userRowMapper;
     @Override
     public User queryUserByAccountAndPassword(String account, String password) {
         String sql="select uid,account,name,password,gender,nickname,email,idcard,phonenum," +
                 "role,amatar,age from user where account=? and password=?";
-        List query = jdbcTemplate.query(sql, new String[]{account, password}, myRowMapper);
+        List query = jdbcTemplate.query(sql, new String[]{account, password}, userRowMapper);
         return (query.size()>0)?(User)query.get(0):null;
     }
 
@@ -30,7 +30,7 @@ public class UserDaoImp implements IUserDao {
     public User queryUserByEmail(String email) {
         String sql="select uid,account,name,password,gender,nickname,email,idcard,phonenum," +
                 "role,amatar,age from user where email=?";
-        List<User> query=jdbcTemplate.query(sql,new String[]{email},myRowMapper);
+        List<User> query=jdbcTemplate.query(sql,new String[]{email}, userRowMapper);
         return (query.size()>0)?(User)query.get(0):null;
     }
 
@@ -38,7 +38,7 @@ public class UserDaoImp implements IUserDao {
     public User queryUserByIdcard(String idcard) {
         String sql="SELECT uid,account,name,password,gender,nickname,email,idcard,phonenum," +
                 "role,amatar,age FROM user where idcard=?";
-        List query = jdbcTemplate.query(sql, new String[]{idcard}, myRowMapper);
+        List query = jdbcTemplate.query(sql, new String[]{idcard}, userRowMapper);
         return (query.size()>0)?(User)query.get(0):null;
     }
 
@@ -46,7 +46,7 @@ public class UserDaoImp implements IUserDao {
     public User queryUserByPhonenum(String phonenum) {
         String sql="select uid,account,name,password,gender,nickname,email,idcard,phonenum," +
                 "role,amatar,age from user where phonenum=?";
-        List query = jdbcTemplate.query(sql, new String[]{phonenum}, myRowMapper);
+        List query = jdbcTemplate.query(sql, new String[]{phonenum}, userRowMapper);
         return (query.size()>0)?(User)query.get(0):null;
     }
 
@@ -54,7 +54,7 @@ public class UserDaoImp implements IUserDao {
     public User queryUserByAccount(String account) {
         String sql="select uid,account,name,password,gender,nickname,email,idcard,phonenum," +
                 "role,amatar,age from user where account=?";
-        List queryList = jdbcTemplate.query(sql, new String[]{account}, myRowMapper);
+        List queryList = jdbcTemplate.query(sql, new String[]{account}, userRowMapper);
         return (queryList.size()>0)?(User)queryList.get(0):null;
     }
 
@@ -69,7 +69,7 @@ public class UserDaoImp implements IUserDao {
     public User queryUserById(int id) {
         String sql="select uid,account,name,password,gender,nickname,email,idcard,phonenum," +
                 "role,amatar,age from user where uid=?";
-        List query = jdbcTemplate.query(sql,new Integer[]{id}, myRowMapper);
+        List query = jdbcTemplate.query(sql,new Integer[]{id}, userRowMapper);
         return (query.size()>0)?(User)query.get(0):null;
     }
 

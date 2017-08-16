@@ -10,6 +10,33 @@ public class LiveChattingMessage {
     private String to;
     private String content;
     private String time;
+    private Integer fansnumber;
+    private Integer intent; //1代表聊天 2代表粉丝   3代表当前在线人数
+    private Boolean  result;    //返回处理结果
+
+    public Integer getFansnumber() {
+        return fansnumber;
+    }
+    public void setFansnumber(Integer fansnumber) {
+        this.fansnumber = fansnumber;
+    }
+
+    public Integer getIntent() {
+        return intent;
+    }
+
+    public void setIntent(Integer intent) {
+        this.intent = intent;
+    }
+
+    public Boolean getResult() {
+        return result;
+    }
+
+    public void setResult(Boolean result) {
+        this.result = result;
+    }
+
     public Integer getMid() {
         return mid;
     }

@@ -1,6 +1,7 @@
 package com.example.wkjee.fienesslive.customer.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.example.wkjee.fienesslive.customer.dao.ICustomerDao;
 import com.example.wkjee.fienesslive.customer.service.CustomerLoginService;
 import com.example.wkjee.fienesslive.manager.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 public class CustomerLoginController {
     @Autowired
     private CustomerLoginService customerLoginService;
-
     @ResponseBody
     @RequestMapping(value = "/toLogin",method = RequestMethod.POST)
     public String login(@RequestParam(value = "user", defaultValue = "")String user , HttpServletRequest request){
