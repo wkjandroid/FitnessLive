@@ -7,8 +7,6 @@ import com.example.wkjee.fienesslive.tools.UserRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-
-import javax.sql.DataSource;
 import java.util.List;
 
 /**
@@ -26,7 +24,7 @@ public class CustomerDaoImp implements ICustomerDao {
     private FansRowMapper fansRowMapper=new FansRowMapper();
     @Override
     public int getFansNumberByAccount(String account) {
-        String sql="SELECT * FROM fans WHERE f_account=?";
+        String sql="SELECT * FROM fans WHERE fs_account=?";
         List query = fansTemplate.query(sql,new String []{account}, fansRowMapper);
         return (query.size()>0)?query.size():0;
     }

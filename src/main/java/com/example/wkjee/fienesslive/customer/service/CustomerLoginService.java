@@ -17,26 +17,15 @@ public class CustomerLoginService {
     @Autowired
     private ICustomerDao customerDao;
 
-    public boolean qqLogin(User loginUser,HttpServletRequest request) {
+    public String qqLogin(User loginUser,HttpServletRequest request) {
         /* user.setAccount(openid); user.setToken("qq:"+token);user.setNickname
         user.setGender user.setAmatar*/
         if (!customerDao.checkUserExist(loginUser.getAccount())){
             customerDao.registerQQUser(loginUser);
         }
         verifyUser(loginUser,request);
-        return true;
-    }
-
-    public boolean wechatLogin(User loginUser,HttpServletRequest request) {
-        return false;
-    }
-
-    public boolean weiboLogin(User loginUser, HttpServletRequest request) {
-        if (!customerDao.checkUserExist(loginUser.getAccount())){
-            customerDao.registerWeiboUser(loginUser);
-        }
-        verifyUser(loginUser,request);
-        return true;
+        User user = customerDao.getUserInfoByAccount(loginUser.getAccount());
+        return JSON.toJSONString(user);
     }
     public String  customerLogin(User loginUser,HttpServletRequest request) {
         if ((!customerDao.checkUserExist(loginUser.getAccount()))){
@@ -49,6 +38,18 @@ public class CustomerLoginService {
         User user = customerDao.getUserInfoByAccount(loginUser.getAccount());
         return JSON.toJSONString(user);
     }
+    public String weiboLogin(User loginUser, HttpServletRequest request) {
+        if (!customerDao.checkUserExist(loginUser.getAccount())){
+            customerDao.registerWeiboUser(loginUser);
+        }
+        User user = customerDao.getUserInfoByAccount(loginUser.getAccount());
+        return JSON.toJSONString(user);
+    }
+    public boolean wechatLogin(User loginUser,HttpServletRequest request) {
+        return false;
+    }
+
+
     public void  verifyUser(User loginUser,HttpServletRequest request){
         //现将之前的登录销毁
         Map<User,HttpSession> userMap= (Map<User, HttpSession>) request.
@@ -71,5 +72,9 @@ public class CustomerLoginService {
             httpSession.invalidate();
             userMap.remove(loginUser);
         }
+    }
+
+    public User getUserInfoByAccount(String account) {
+        return customerDao.getUserInfoByAccount(account);
     }
 }

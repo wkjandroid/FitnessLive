@@ -13,11 +13,11 @@ public class FansRowMapper implements RowMapper {
     @Override
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
         Fans fans=new Fans();
-        fans.setFid(rs.getInt("f_id"));
-        fans.setFaccount(rs.getString("f_account"));
-        fans.setFnickname(rs.getString("f_nickname"));
-        fans.setFphonenumber(rs.getString("f_phonenum"));
-        fans.setFamatar(rs.getString("f_amatar"));
+        fans.setFid(rs.getInt("fs_id"));
+        fans.setFaccount(rs.getString("fs_account"));
+        fans.setFnickname(rs.getString("fs_nickname"));
+        fans.setFphonenumber(rs.getString("fs_phonenum"));
+        fans.setFamatar(rs.getString("fs_amatar"));
         return fans;
     }
 }

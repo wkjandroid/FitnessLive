@@ -26,17 +26,23 @@ public class CustomerLoginController {
         String  result="";
         User loginUser = JSON.parseObject(user, User.class);
         if (loginUser.getToken().substring(0,3).contains("qq:")){
-           result =String.valueOf(customerLoginService.qqLogin(loginUser,request));
+           result =customerLoginService.qqLogin(loginUser,request);
         }else if (loginUser.getToken().substring(0,3).contains("wx:")){
            result=String.valueOf(customerLoginService.wechatLogin(loginUser,request));
         }else if (loginUser.getToken().substring(0,3).contains("wb:")){
-            result=String.valueOf(customerLoginService.weiboLogin(loginUser,request));
+            result=customerLoginService.weiboLogin(loginUser,request);
         }else {
             result=customerLoginService.customerLogin(loginUser,request);
         }
         return result;
     }
-
+    /** 获取用户信息 */
+    @RequestMapping(value = "/getUserInfo")
+    @ResponseBody
+    public String getUserInfo(@RequestParam(value = "account")String account){
+        User loginUser = customerLoginService.getUserInfoByAccount(account);
+        return JSON.toJSONString(loginUser);
+    }
     @RequestMapping(value = "/quitLogin")
     @ResponseBody
     public String quitLogin(@RequestParam String user, HttpServletRequest request){

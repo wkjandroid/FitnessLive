@@ -12,10 +12,12 @@ import java.sql.SQLException;
  */
 @Repository
 public  class UserRowMapper implements RowMapper {
-    /** sql的行映射*/
+    /**
+     * sql的行映射
+     */
     @Override
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
-        User user=new User();
+        User user = new User();
         user.setUid(rs.getInt("uid"));
         user.setAccount(rs.getString("account"));
         user.setName(rs.getString("name"));
@@ -28,6 +30,9 @@ public  class UserRowMapper implements RowMapper {
         user.setRole(rs.getInt("role"));
         user.setAmatar(rs.getString("amatar"));
         user.setAge(rs.getInt("age"));
+        user.setFansnum(rs.getInt("fansnum"));
+        user.setGrade(rs.getInt("grade"));
+        user.setAttentionnum(rs.getInt("attentionnum"));
         return user;
     }
 }
