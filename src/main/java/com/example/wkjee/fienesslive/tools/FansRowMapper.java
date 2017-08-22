@@ -18,6 +18,7 @@ public class FansRowMapper implements RowMapper {
         fans.setFnickname(rs.getString("fs_nickname"));
         fans.setFphonenumber(rs.getString("fs_phonenum"));
         fans.setFamatar(rs.getString("fs_amatar"));
+        fans.setUid(rs.getInt("u_id"));
         return fans;
     }
 }

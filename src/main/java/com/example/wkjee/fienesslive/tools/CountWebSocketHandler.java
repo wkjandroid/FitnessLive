@@ -1,6 +1,7 @@
 package com.example.wkjee.fienesslive.tools;
 
 import com.alibaba.fastjson.JSON;
+import com.example.wkjee.fienesslive.FitnessliveApplication;
 import com.example.wkjee.fienesslive.conf.LiveChattingMessage;
 import com.example.wkjee.fienesslive.customer.service.CustomerLiveChattingService;
 import org.springframework.stereotype.Component;
@@ -18,7 +19,7 @@ public class CountWebSocketHandler extends TextWebSocketHandler {
     //存放当前全部在线人数
     private static long count = 0;
     //存放直播用户和观众会话
-    private static Map<String,Map<String,WebSocketSession>> sessionMap = new HashMap();
+    private static Map<String,Map<String,WebSocketSession>> sessionMap = FitnessliveApplication.sessionMap;
     //处理分发直播间的评论信息
     private CustomerLiveChattingService customerLiveChattingService=new CustomerLiveChattingService();  //用户直播聊天服务
 

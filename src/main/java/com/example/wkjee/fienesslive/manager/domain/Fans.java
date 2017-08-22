@@ -9,6 +9,15 @@ public class Fans {
     private String fnickname;
     private String fphonenumber;
     private String famatar;
+    private Integer uid;
+
+    public Integer getUid() {
+        return uid;
+    }
+
+    public void setUid(Integer uid) {
+        this.uid = uid;
+    }
 
     public Fans() {}
     public Integer getFid() {

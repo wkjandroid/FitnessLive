@@ -21,13 +21,13 @@ public  class UserRowMapper implements RowMapper {
         user.setUid(rs.getInt("uid"));
         user.setAccount(rs.getString("account"));
         user.setName(rs.getString("name"));
-        user.setPassword(rs.getString("password"));
+      /*  user.setPassword(rs.getString("password"));*/
         user.setGender(rs.getString("gender"));
         user.setNickname(rs.getString("nickname"));
         user.setEmail(rs.getString("email"));
         user.setIdcard(rs.getString("idcard"));
         user.setPhonenum(rs.getString("phonenum"));
-        user.setRole(rs.getInt("role"));
+      /*  user.setRole(rs.getInt("role"));*/
         user.setAmatar(rs.getString("amatar"));
         user.setAge(rs.getInt("age"));
         user.setFansnum(rs.getInt("fansnum"));

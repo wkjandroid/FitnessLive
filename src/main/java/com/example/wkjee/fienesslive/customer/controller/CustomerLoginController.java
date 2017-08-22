@@ -39,13 +39,13 @@ public class CustomerLoginController {
     /** 获取用户信息 */
     @RequestMapping(value = "/getUserInfo")
     @ResponseBody
-    public String getUserInfo(@RequestParam(value = "account")String account){
+    public String getUserInfo(@RequestParam(value = "account",defaultValue = "")String account){
         User loginUser = customerLoginService.getUserInfoByAccount(account);
         return JSON.toJSONString(loginUser);
     }
     @RequestMapping(value = "/quitLogin")
     @ResponseBody
-    public String quitLogin(@RequestParam String user, HttpServletRequest request){
+    public String quitLogin(@RequestParam(value = "user", defaultValue = "") String user, HttpServletRequest request){
         System.out.println("你开始退出了！");
         User loginUser = JSON.parseObject(user, User.class);
         if (null==loginUser)

@@ -1,10 +1,14 @@
 package com.example.wkjee.fienesslive.listener;
 
 import com.example.wkjee.fienesslive.manager.domain.User;
+import org.springframework.web.socket.WebSocketSession;
+
 import javax.servlet.ServletContextEvent;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,13 +19,12 @@ public class ServletContextListener implements javax.servlet.ServletContextListe
 {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
+        //存放登录用户信息
         Map<User,HttpSession> userMap=new HashMap<>();
+        //存放直播用户和观众会话
         sce.getServletContext().setAttribute("userMap",userMap);
-
     }
 
     @Override
-    public void contextDestroyed(ServletContextEvent sce) {
-
-    }
+    public void contextDestroyed(ServletContextEvent sce) {}
 }

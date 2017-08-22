@@ -9,6 +9,15 @@ public class Attention {
     private String gznickname;
     private String gzphonenumber;
     private String gzamatar;
+    private Integer uid;
+
+    public Integer getUid() {
+        return uid;
+    }
+
+    public void setUid(Integer uid) {
+        this.uid = uid;
+    }
 
     public String getGzaccount() {
         return gzaccount;

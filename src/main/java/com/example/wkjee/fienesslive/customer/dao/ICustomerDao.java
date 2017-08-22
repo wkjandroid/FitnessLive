@@ -1,7 +1,10 @@
 package com.example.wkjee.fienesslive.customer.dao;
 
 
+import com.example.wkjee.fienesslive.manager.domain.LiveTheme;
 import com.example.wkjee.fienesslive.manager.domain.User;
+
+import java.util.List;
 
 /**
  * Created by wkj_pc on 2017/6/17.
@@ -20,4 +23,10 @@ public interface ICustomerDao {
     boolean registerWeiboUser(User loginUser);
 
     int getFansNumberByAccount(String account);
+
+    List<User> getAllLiveUserInfos();
+
+    List<LiveTheme> getAllLiveThemes();
+
+    String addLIveUserStyle(int uid, List<LiveTheme> liveThemes);
 }

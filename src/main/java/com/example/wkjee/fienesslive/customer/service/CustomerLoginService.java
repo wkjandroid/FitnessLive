@@ -1,6 +1,7 @@
 package com.example.wkjee.fienesslive.customer.service;
 
 import com.alibaba.fastjson.JSON;
+import com.example.wkjee.fienesslive.FitnessliveApplication;
 import com.example.wkjee.fienesslive.customer.dao.ICustomerDao;
 import com.example.wkjee.fienesslive.manager.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;

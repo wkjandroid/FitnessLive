@@ -9,7 +9,7 @@ import java.sql.SQLException;
 /**
  * Created by wkj_pc on 2017/8/20.
  */
-class AttentionRowMapperpublic implements RowMapper {
+class AttentionRowMapper implements RowMapper {
     /**attnetion表的 sql的行映射*/
     @Override
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -19,6 +19,7 @@ class AttentionRowMapperpublic implements RowMapper {
         attention.setGznickname(rs.getString("f_nickname"));
         attention.setGzphonenumber(rs.getString("f_phonenum"));
         attention.setGzamatar(rs.getString("f_amatar"));
+        attention.setUid(rs.getInt("u_id"));
         return attention;
     }
 }

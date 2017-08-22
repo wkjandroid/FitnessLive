@@ -17,6 +17,7 @@ public class User {
     private String phonenum;
     private Integer role;       //1:main admin 2:personal admin 3: user;
     private String amatar;
+    private Boolean islive;
     private Integer age;
     private Integer fansnum;//粉丝数量
     private Integer grade;  //用户积分
@@ -48,6 +49,13 @@ public class User {
 
     private String token;
     public User(){}
+    public Boolean getIslive() {
+        return islive;
+    }
+
+    public void setIslive(Boolean islive) {
+        this.islive = islive;
+    }
 
     @Override
     public int hashCode() {
