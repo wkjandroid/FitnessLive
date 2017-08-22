@@ -6,8 +6,8 @@ package com.example.wkjee.fienesslive.manager.domain;
 public class LiveTheme {
     private Integer ltid;
     private String lttheme;
-    private Integer uid;
     private Boolean islive;
+    private Integer uid;
 
     public Boolean getIslive() {
         return islive;

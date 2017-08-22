@@ -17,7 +17,7 @@ import java.util.List;
  * Created by wkj_pc on 2017/8/22.
  */
 @Controller
-@RequestMapping("/customer/login")
+@RequestMapping("/customer/live")
 public class CustomerLiveController {
 
     @Autowired
@@ -30,6 +30,7 @@ public class CustomerLiveController {
     @ResponseBody
     public String getHomeLiveUserInfos() {
         List<User> liveUsers = liveService.getAllLiveUserInfo();
+        System.out.println("----------"+JSON.toJSONString(liveUsers));
         return JSON.toJSONString(liveUsers);
     }
 

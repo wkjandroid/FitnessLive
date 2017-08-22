@@ -7,8 +7,12 @@ import com.example.wkjee.fienesslive.tools.FansRowMapper;
 import com.example.wkjee.fienesslive.tools.LiveThemeRowMapper;
 import com.example.wkjee.fienesslive.tools.UserRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -24,15 +28,33 @@ public class CustomerDaoImp implements ICustomerDao {
     @Autowired
     private LiveThemeRowMapper liveThemeMapper;
 
-    private JdbcTemplate fansTemplate=new JdbcTemplate(DataSourceTools.getDataSource());
+    private JdbcTemplate wbTemplate=new JdbcTemplate(DataSourceTools.getDataSource());
     private FansRowMapper fansRowMapper=new FansRowMapper();
 
     @Override
     public String addLIveUserStyle(int uid, List<LiveTheme> liveThemes) {
         String delUserStyle = "delete from livethemes where u_id=?";
-        template.update(delUserStyle,new int[]{uid});
-        template.batchUpdate();
-        return null;
+        try{
+            template.update(delUserStyle,new int[]{uid});
+            BatchPreparedStatementSetter setter = new BatchPreparedStatementSetter() {
+                @Override
+                public void setValues(PreparedStatement ps, int i) throws SQLException {
+                    ps.setString(1,liveThemes.get(i).getLttheme());
+                    ps.setBoolean(2,false);
+                    ps.setInt(3,liveThemes.get(i).getUid());
+                }
+                @Override
+                public int getBatchSize() {
+                    return liveThemes.size();
+                }
+            };
+            String sql="INSERT INTO livethemes(lt_name,lt_islive,uid) values(?,?,?)";
+            template.batchUpdate(sql, setter);
+            return "true";
+       }catch (Exception e){
+            e.printStackTrace();
+            return "false";
+       }
     }
 
     @Override
@@ -44,15 +66,15 @@ public class CustomerDaoImp implements ICustomerDao {
 
     @Override
     public List<User> getAllLiveUserInfos() {
-        String sql = "select * from user where islive=1";
-        List query = template.query(sql, userRowMapper);
+        String sql = "select * from user where islive=0";
+        List<User> query = template.query(sql, userRowMapper);
         return (query.size()>0)?query:null;
     }
 
     @Override
     public int getFansNumberByAccount(String account) {
         String sql="SELECT * FROM fans WHERE fs_account=?";
-        List query = fansTemplate.query(sql,new String []{account}, fansRowMapper);
+        List query = wbTemplate.query(sql,new String []{account}, fansRowMapper);
         return (query.size()>0)?query.size():0;
     }
 

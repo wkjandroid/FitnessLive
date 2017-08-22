@@ -21,7 +21,7 @@ public class UserDaoImp implements IUserDao {
     @Override
     public User queryUserByAccountAndPassword(String account, String password) {
         String sql="select uid,account,name,password,gender,nickname,email,idcard,phonenum," +
-                "role,amatar,age from user where account=? and password=?";
+                "role,amatar,age,islive,grade,fansnum,attentionnum from user where account=? and password=?";
         List query = jdbcTemplate.query(sql, new String[]{account, password}, userRowMapper);
         return (query.size()>0)?(User)query.get(0):null;
     }
@@ -29,7 +29,7 @@ public class UserDaoImp implements IUserDao {
     @Override
     public User queryUserByEmail(String email) {
         String sql="select uid,account,name,password,gender,nickname,email,idcard,phonenum," +
-                "role,amatar,age from user where email=?";
+                "role,amatar,age,islive,grade,fansnum,attentionnum  from user where email=?";
         List<User> query=jdbcTemplate.query(sql,new String[]{email}, userRowMapper);
         return (query.size()>0)?(User)query.get(0):null;
     }
@@ -37,7 +37,7 @@ public class UserDaoImp implements IUserDao {
     @Override
     public User queryUserByIdcard(String idcard) {
         String sql="SELECT uid,account,name,password,gender,nickname,email,idcard,phonenum," +
-                "role,amatar,age FROM user where idcard=?";
+                "role,amatar,age,islive,grade,fansnum,attentionnum  FROM user where idcard=?";
         List query = jdbcTemplate.query(sql, new String[]{idcard}, userRowMapper);
         return (query.size()>0)?(User)query.get(0):null;
     }
@@ -45,7 +45,7 @@ public class UserDaoImp implements IUserDao {
     @Override
     public User queryUserByPhonenum(String phonenum) {
         String sql="select uid,account,name,password,gender,nickname,email,idcard,phonenum," +
-                "role,amatar,age from user where phonenum=?";
+                "role,amatar,age,islive,grade,fansnum,attentionnum  from user where phonenum=?";
         List query = jdbcTemplate.query(sql, new String[]{phonenum}, userRowMapper);
         return (query.size()>0)?(User)query.get(0):null;
     }
@@ -53,7 +53,7 @@ public class UserDaoImp implements IUserDao {
     @Override
     public User queryUserByAccount(String account) {
         String sql="select uid,account,name,password,gender,nickname,email,idcard,phonenum," +
-                "role,amatar,age from user where account=?";
+                "role,amatar,age ,islive,grade,fansnum,attentionnum from user where account=?";
         List queryList = jdbcTemplate.query(sql, new String[]{account}, userRowMapper);
         return (queryList.size()>0)?(User)queryList.get(0):null;
     }
@@ -68,7 +68,7 @@ public class UserDaoImp implements IUserDao {
     @Override
     public User queryUserById(int id) {
         String sql="select uid,account,name,password,gender,nickname,email,idcard,phonenum," +
-                "role,amatar,age from user where uid=?";
+                "role,amatar,age,islive,grade,fansnum,attentionnum  from user where uid=?";
         List query = jdbcTemplate.query(sql,new Integer[]{id}, userRowMapper);
         return (query.size()>0)?(User)query.get(0):null;
     }
@@ -76,7 +76,7 @@ public class UserDaoImp implements IUserDao {
     @Override
     public List<User> queryAdminAll() {
         String sql="select uid,account,name,password,gender,nickname,email,idcard,phonenum," +
-                "role,amatar,age from Admin where role<3";
+                "role,amatar,age,islive,grade,fansnum,attentionnum  from Admin where role<3";
         List<User> users = jdbcTemplate.queryForList(sql, User.class);
         return users;
     }
@@ -118,7 +118,7 @@ public class UserDaoImp implements IUserDao {
     @Override
     public List<User> queryUserAll() {
         String sql="select uid,account,name,password,gender,nickname,email,idcard,phonenum," +
-                "role,amatar,age from user";
+                "role,amatar,age,islive,grade,fansnum,attentionnum  from user";
         List<User> users = jdbcTemplate.queryForList(sql, User.class);
         return (users.size()>0)?users:null;
     }

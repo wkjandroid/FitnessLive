@@ -2,12 +2,15 @@ package com.example.wkjee.fienesslive.tools;
 
 import com.example.wkjee.fienesslive.manager.domain.Fans;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
  * Created by wkj_pc on 2017/8/16.
  */
+@Repository
 public class FansRowMapper implements RowMapper {
     /**fans表的 sql的行映射*/
     @Override

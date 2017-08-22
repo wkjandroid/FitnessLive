@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.example.wkjee.fienesslive.FitnessliveApplication;
 import com.example.wkjee.fienesslive.conf.LiveChattingMessage;
 import com.example.wkjee.fienesslive.customer.service.CustomerLiveChattingService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -70,7 +71,7 @@ public class CountWebSocketHandler extends TextWebSocketHandler {
     public void sendFansMsg(WebSocketSession session, String account) throws IOException {
         LiveChattingMessage fansNumMsg=new LiveChattingMessage();
         try{
-            int number=customerLiveChattingService.getFansNumberByAccount(account);
+            int number=customerLiveChattingService.wsGetFansNumberByAccount(account);
             fansNumMsg.setFansnumber(number);
             fansNumMsg.setIntent(2);
             fansNumMsg.setFrom("server");

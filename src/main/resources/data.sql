@@ -17,7 +17,7 @@ CREATE TABLE `user` (
   `role` bigint(20)  DEFAULT NULL COMMENT '角色',
   `amatar` varchar(200) DEFAULT NULL COMMENT '头像',
   `age` bigint(20) DEFAULT 0 COMMENT '年龄',
-  `islive` BOOLEAN DEFAULT 0 COMMENT '是否直播',
+  `islive` TINYINT DEFAULT 0 COMMENT '是否直播',
   `grade` bigint(200) DEFAULT 0 COMMENT '积分',
   `fansnum` bigint(200) DEFAULT 0 COMMENT '粉丝数',
   `attentionnum` bigint(200) DEFAULT 0 COMMENT '关注数',
@@ -53,7 +53,7 @@ DROP TABLE IF EXISTS `livethemes`;
 CREATE TABLE `livethemes` (
   `lt_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ltID',
   `lt_name` varchar(200)  COMMENT '直播风格',
-  `lt_islive` BOOLEAN COMMENT '是否在直播',
+  `lt_islive` TINYINT DEFAULT 0 COMMENT '是否在直播',
   `u_id` bigint(20) NOT NULL COMMENT 'userid',
   PRIMARY KEY (`lt_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
