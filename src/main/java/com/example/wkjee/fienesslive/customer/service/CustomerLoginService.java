@@ -1,7 +1,6 @@
 package com.example.wkjee.fienesslive.customer.service;
 
 import com.alibaba.fastjson.JSON;
-import com.example.wkjee.fienesslive.FitnessliveApplication;
 import com.example.wkjee.fienesslive.customer.dao.ICustomerDao;
 import com.example.wkjee.fienesslive.manager.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +28,15 @@ public class CustomerLoginService {
         return JSON.toJSONString(user);
     }
     public String  customerLogin(User loginUser,HttpServletRequest request) {
-        if ((!customerDao.checkUserExist(loginUser.getAccount()))){
+
+        if ((!customerDao.checkUserExistByMobileNum(loginUser.getPhonenum()))){
             return "none";
         }
-        if(!customerDao.getUserByAccountAndPwd(loginUser)){
+        if(!customerDao.getUserByMobileAndPwd(loginUser)){
             return "error";
         }
         verifyUser(loginUser,request);
-        User user = customerDao.getUserInfoByAccount(loginUser.getAccount());
+        User user = customerDao.getUserInfoByMobile(loginUser.getPhonenum());
         return JSON.toJSONString(user);
     }
     public String weiboLogin(User loginUser, HttpServletRequest request) {
@@ -77,5 +77,9 @@ public class CustomerLoginService {
 
     public User getUserInfoByAccount(String account) {
         return customerDao.getUserInfoByAccount(account);
+    }
+
+    public String updateUserPassword(String mobilenum, String password) {
+        return customerDao.updateUserPassword(mobilenum,password);
     }
 }

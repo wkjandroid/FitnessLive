@@ -63,6 +63,8 @@ CREATE TABLE `livethemes` (
 insert  into `user`(`account`,`password`,`nickname`,`role`) values('admin','admin','admin',1);
 insert  into `user`(`account`,`password`,`nickname`,`role`) values('admin_1','admin','admin-1',1);
 insert  into `user`(`account`,`password`,`nickname`,`role`) values('admin_2','admin','admin_3',1);
+insert  into `user`(`account`,`password`,`nickname`) values('17862901468','123456','小灰灰');
+
 
 insert  into `fans`(`fs_account`,`fs_nickname`,`fs_phonenum`,`u_id`) values('admin_1','admin','17862901468',1);
 insert  into `attention`(`gz_account`,`gz_nickname`,`gz_phonenum`,`u_id`) values('admin_1','admin','17862901468',1);

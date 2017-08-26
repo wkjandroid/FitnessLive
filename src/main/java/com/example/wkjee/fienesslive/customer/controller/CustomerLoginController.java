@@ -53,4 +53,17 @@ public class CustomerLoginController {
         customerLoginService.quitLogin(loginUser,request);
         return "";
     }
+    /** 返回客户端请求的验证码 */
+    @RequestMapping(value = "/getVerifycode")
+    @ResponseBody
+    public String getVerifycode(){
+        return "true:1234";
+    }
+    /** 修改用户密码*/
+    @ResponseBody
+    @RequestMapping(value = "/updateUserPassword")
+    public String updateUserPassword(@RequestParam(value = "mobilenum",defaultValue = "")String mobilenum ,
+                                     @RequestParam(value = "password",defaultValue = "")String password ){
+        return customerLoginService.updateUserPassword(mobilenum,password);
+    }
 }

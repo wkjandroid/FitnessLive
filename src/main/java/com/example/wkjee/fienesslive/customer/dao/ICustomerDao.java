@@ -29,4 +29,13 @@ public interface ICustomerDao {
     List<LiveTheme> getAllLiveThemes();
 
     String addLIveUserStyle(int uid, List<LiveTheme> liveThemes);
+
+    boolean checkUserExistByMobileNum(String phonenum);
+
+    boolean getUserByMobileAndPwd(User loginUser);
+
+    User getUserInfoByMobile(String phonenum);
+
+    String updateUserPassword(String mobilenum, String password);
+
 }

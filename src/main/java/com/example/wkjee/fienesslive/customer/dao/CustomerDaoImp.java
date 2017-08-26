@@ -33,6 +33,7 @@ public class CustomerDaoImp implements ICustomerDao {
     private JdbcTemplate wbTemplate=new JdbcTemplate(DataSourceTools.getDataSource());
     private FansRowMapper fansRowMapper=new FansRowMapper();
 
+
     @Override
     public String addLIveUserStyle(int uid, List<LiveTheme> liveThemes) {
         String delUserStyle = "delete from livethemes where u_id=?";
@@ -89,7 +90,6 @@ public class CustomerDaoImp implements ICustomerDao {
                 loginUser.getGender(),
                 loginUser.getNickname(), loginUser.getPhonenum(),loginUser.getAmatar()});
         return (updateRows>0)?true:false;
-
     }
 
     @Override
@@ -100,10 +100,25 @@ public class CustomerDaoImp implements ICustomerDao {
     }
 
     @Override
+    public User getUserInfoByMobile(String phonenum) {
+        String sql="select * from user where phonenum=?";
+        List query = template.query(sql, new String[]{phonenum}, userRowMapper);
+        return (query.size()>0)?((User)query.get(0)):null;
+    }
+
+    @Override
     public boolean getUserByAccountAndPwd(User loginUser) {
         String sql="select * from user where account=? and password=?";
         List query = template.query(sql, new String[]{loginUser.getAccount(), loginUser.getPassword()}, userRowMapper);
         return (query.size()>0)?true:false;
+    }
+
+    @Override
+    public boolean getUserByMobileAndPwd(User loginUser) {
+        String sql="select * from user where phonenum=? and password=?";
+        List query = template.query(sql, new String[]{loginUser.getPhonenum(), loginUser.getPassword()}, userRowMapper);
+        return (query.size()>0)?true:false;
+
     }
 
     @Override
@@ -123,4 +138,17 @@ public class CustomerDaoImp implements ICustomerDao {
         return (query.size()>0)?true:false;
     }
 
+    @Override
+    public boolean checkUserExistByMobileNum(String phonenum) {
+        String sql="select * from user where phonenum=?";
+        List query = template.query(sql,new String[]{phonenum}, userRowMapper);
+        return (query.size()>0)?true:false;
+    }
+
+    @Override
+    public String updateUserPassword(String mobilenum, String password) {
+        String sql="UPDATE user SET password=? where phonenum=?";
+        int update = template.update(sql, new String[]{ password , mobilenum });
+        return (update>0)? "true" : "false";
+    }
 }
