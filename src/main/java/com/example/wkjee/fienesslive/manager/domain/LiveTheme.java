@@ -6,14 +6,14 @@ package com.example.wkjee.fienesslive.manager.domain;
 public class LiveTheme {
     private Integer ltid;
     private String lttheme;
-    private Boolean islive;
+    private Integer islive;
     private Integer uid;
 
-    public Boolean getIslive() {
+    public Integer getIslive() {
         return islive;
     }
 
-    public void setIslive(Boolean islive) {
+    public void setIslive(Integer islive) {
         this.islive = islive;
     }
 

@@ -22,7 +22,7 @@ public class User {
     private Integer fansnum;//粉丝数量
     private Integer grade;  //用户积分
     private Integer attentionnum;   //我的关注
-
+    private String livebigpic;  //直播大图
     public Integer getAttentionnum() {
         return attentionnum;
     }
@@ -48,6 +48,13 @@ public class User {
     }
 
     private String token;
+    public String getLivebigpic() {
+        return livebigpic;
+    }
+
+    public void setLivebigpic(String livebigpic) {
+        this.livebigpic = livebigpic;
+    }
     public User(){}
     public Boolean getIslive() {
         return islive;

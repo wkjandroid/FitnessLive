@@ -6,6 +6,7 @@ import com.example.wkjee.fienesslive.tools.DataSourceTools;
 import com.example.wkjee.fienesslive.tools.FansRowMapper;
 import com.example.wkjee.fienesslive.tools.LiveThemeRowMapper;
 import com.example.wkjee.fienesslive.tools.UserRowMapper;
+import com.mysql.fabric.xmlrpc.base.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -59,9 +61,11 @@ public class CustomerDaoImp implements ICustomerDao {
 
     @Override
     public List<LiveTheme> getAllLiveThemes() {
-        String sql="select * from livethemes where islive=1";
+
+        String sql="select * from livethemes where lt_islive=0";
         List query = template.query(sql, liveThemeMapper);
         return (query.size()>0) ? query : null;
+
     }
 
     @Override
@@ -107,15 +111,15 @@ public class CustomerDaoImp implements ICustomerDao {
         /* user.setAccount(openid); user.setToken("qq:"+token);user.setNickname
         user.setGender user.setAmatar*/
         String sql="insert into user (account,gender,nickname,amatar) values(?,?,?,?)";
-        int updateRows = template.update(sql, new String[]{loginUser.getAccount(), loginUser.getGender(),
-                loginUser.getNickname(), loginUser.getAmatar()});
+        int updateRows = template.update(sql, loginUser.getAccount(), loginUser.getGender(),
+                loginUser.getNickname(), loginUser.getAmatar());
         return (updateRows>0)?true:false;
     }
 
     @Override
     public boolean checkUserExist(String account) {
         String sql="select * from user where account=?";
-        List query = template.query(sql, new String[]{account}, userRowMapper);
+        List query = template.query(sql,new String[]{account}, userRowMapper);
         return (query.size()>0)?true:false;
     }
 

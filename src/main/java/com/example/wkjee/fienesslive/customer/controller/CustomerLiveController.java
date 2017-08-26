@@ -30,7 +30,6 @@ public class CustomerLiveController {
     @ResponseBody
     public String getHomeLiveUserInfos() {
         List<User> liveUsers = liveService.getAllLiveUserInfo();
-        System.out.println("----------"+JSON.toJSONString(liveUsers));
         return JSON.toJSONString(liveUsers);
     }
 
@@ -54,4 +53,5 @@ public class CustomerLiveController {
         List<LiveTheme> liveThemes = JSON.parseObject(livethemes, new TypeReference<List<LiveTheme>>(){});
         return liveService.addLiveUserStyle(Integer.parseInt(uid),liveThemes);
     }
+
 }

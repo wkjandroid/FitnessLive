@@ -21,6 +21,8 @@ CREATE TABLE `user` (
   `grade` bigint(200) DEFAULT 0 COMMENT '积分',
   `fansnum` bigint(200) DEFAULT 0 COMMENT '粉丝数',
   `attentionnum` bigint(200) DEFAULT 0 COMMENT '关注数',
+  `livebigpic` bigint(200) DEFAULT 0 COMMENT '直播大图',
+  `createtime` DATETIME(200) DEFAULT 0 COMMENT '注册时间',
   PRIMARY KEY (`uid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
 
