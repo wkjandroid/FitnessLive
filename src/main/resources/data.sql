@@ -21,8 +21,8 @@ CREATE TABLE `user` (
   `grade` bigint(200) DEFAULT 0 COMMENT '积分',
   `fansnum` bigint(200) DEFAULT 0 COMMENT '粉丝数',
   `attentionnum` bigint(200) DEFAULT 0 COMMENT '关注数',
-  `livebigpic` bigint(200) DEFAULT 0 COMMENT '直播大图',
-  `createtime` DATETIME(200) DEFAULT 0 COMMENT '注册时间',
+  `livebigpic` VARCHAR(200) DEFAULT 0 COMMENT '直播大图',
+  `createtime` DATETIME DEFAULT 0 COMMENT '注册时间',
   PRIMARY KEY (`uid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
 
@@ -34,7 +34,7 @@ CREATE TABLE `fans` (
   `fs_nickname` varchar(200)  DEFAULT NULL COMMENT '昵称',
   `fs_phonenum` varchar(200)  DEFAULT NULL COMMENT '手机号',
   `fs_amatar` varchar(200) DEFAULT NULL COMMENT '头像',
-  `u_id` bigint(20) NOT NULL COMMENT 'userid',
+  `uid` bigint(20) NOT NULL COMMENT 'userid',
   PRIMARY KEY (`fs_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
 
@@ -46,7 +46,7 @@ CREATE TABLE `attention` (
   `gz_nickname` varchar(200)  DEFAULT NULL COMMENT '昵称',
   `gz_phonenum` varchar(200)  DEFAULT NULL COMMENT '手机号',
   `gz_amatar` varchar(200) DEFAULT NULL COMMENT '头像',
-  `u_id` bigint(20) NOT NULL COMMENT 'userid',
+  `uid` bigint(20) NOT NULL COMMENT 'userid',
   PRIMARY KEY (`gz_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
 
@@ -56,16 +56,25 @@ CREATE TABLE `livethemes` (
   `lt_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ltID',
   `lt_name` varchar(200)  COMMENT '直播风格',
   `lt_islive` TINYINT DEFAULT 0 COMMENT '是否在直播',
-  `u_id` bigint(20) NOT NULL COMMENT 'userid',
+  `uid` bigint(20) NOT NULL COMMENT 'userid',
   PRIMARY KEY (`lt_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
 
 insert  into `user`(`account`,`password`,`nickname`,`role`) values('admin','admin','admin',1);
 insert  into `user`(`account`,`password`,`nickname`,`role`) values('admin_1','admin','admin-1',1);
-insert  into `user`(`account`,`password`,`nickname`,`role`) values('admin_2','admin','admin_3',1);
+insert  into `user`(`account`,`password`,`nickname`,`role`) values('admin_2','admin','admin_2',1);
 insert  into `user`(`account`,`password`,`nickname`) values('17862901468','123456','小灰灰');
 
+insert  into `fans`(`fs_account`,`fs_nickname`,`fs_phonenum`,`uid`) values('admin','admin','17862901470',2);
+insert  into `attention`(`gz_account`,`gz_nickname`,`gz_phonenum`,`uid`) values('admin','admin','17862901470',2);
 
-insert  into `fans`(`fs_account`,`fs_nickname`,`fs_phonenum`,`u_id`) values('admin_1','admin','17862901468',1);
-insert  into `attention`(`gz_account`,`gz_nickname`,`gz_phonenum`,`u_id`) values('admin_1','admin','17862901468',1);
-
+insert  into `livethemes`(lt_name,`lt_islive`,`uid`) values('性感',0,1);
+insert  into `livethemes`(lt_name,`lt_islive`,`uid`) values('妖娆',0,1);
+insert  into `livethemes`(lt_name,`lt_islive`,`uid`) values('妩媚',0,1);
+insert  into `livethemes`(lt_name,`lt_islive`,`uid`) values('端庄',0,2);
+insert  into `livethemes`(lt_name,`lt_islive`,`uid`) values('大方',0,2);
+insert  into `livethemes`(lt_name,`lt_islive`,`uid`) values('端庄',0,3);
+insert  into `livethemes`(lt_name,`lt_islive`,`uid`) values('大方',0,3);
+insert  into `livethemes`(lt_name,`lt_islive`,`uid`) values('性感',0,4);
+insert  into `livethemes`(lt_name,`lt_islive`,`uid`) values('妖娆',0,4);
+insert  into `livethemes`(lt_name,`lt_islive`,`uid`) values('妩媚',0,4);
