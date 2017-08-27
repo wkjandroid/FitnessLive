@@ -66,4 +66,10 @@ public class CustomerLoginController {
                                      @RequestParam(value = "password",defaultValue = "")String password ){
         return customerLoginService.updateUserPassword(mobilenum,password);
     }
+    @RequestMapping(value = "/registerUser")
+    @ResponseBody
+    public String registerUser(@RequestParam(value = "mobilenum",defaultValue = "")String mobilenum ,
+                               @RequestParam(value = "password",defaultValue = "")String password ){
+        return customerLoginService.registerUser(mobilenum,password);
+    }
 }

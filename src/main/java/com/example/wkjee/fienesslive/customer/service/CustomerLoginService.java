@@ -82,4 +82,11 @@ public class CustomerLoginService {
     public String updateUserPassword(String mobilenum, String password) {
         return customerDao.updateUserPassword(mobilenum,password);
     }
+
+    public String registerUser(String mobilenum, String password) {
+        if (customerDao.checkUserExistByMobileNum(mobilenum)){
+            return "false";
+        }
+        return customerDao.registerUser(mobilenum,password);
+    }
 }

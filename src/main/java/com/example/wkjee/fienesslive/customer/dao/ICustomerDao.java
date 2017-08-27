@@ -38,4 +38,6 @@ public interface ICustomerDao {
 
     String updateUserPassword(String mobilenum, String password);
 
+    String registerUser(String mobilenum, String password);
+
 }

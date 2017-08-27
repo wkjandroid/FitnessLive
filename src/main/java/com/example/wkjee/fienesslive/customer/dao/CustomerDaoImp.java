@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -150,5 +151,21 @@ public class CustomerDaoImp implements ICustomerDao {
         String sql="UPDATE user SET password=? where phonenum=?";
         int update = template.update(sql, new String[]{ password , mobilenum });
         return (update>0)? "true" : "false";
+    }
+
+    @Override
+    public String registerUser(String mobilenum, String password) {
+        String sql="insert into user (account,password,phonenum,createtime) " +
+                "values(?,?,?,?)";
+        SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy/MM/dd:HH/mm/ss");
+        int updateRows = template.update(sql,getAccount(), password,mobilenum,dateFormat.format(new Date()));
+        return (updateRows>0)?"true":"false";
+    }
+    public String  getAccount(){
+        String sql="select * from user ORDER BY uid DESC limit 1";
+        List<User> query = template.query(sql, userRowMapper);
+        User user = query.get(0);
+        String account=String.valueOf(Integer.parseInt(user.getAccount())+1);
+        return account;
     }
 }
