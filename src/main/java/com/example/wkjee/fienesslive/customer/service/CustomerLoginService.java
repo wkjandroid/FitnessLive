@@ -85,7 +85,7 @@ public class CustomerLoginService {
 
     public String registerUser(String mobilenum, String password) {
         if (customerDao.checkUserExistByMobileNum(mobilenum)){
-            return "false";
+            return ":false";
         }
         return customerDao.registerUser(mobilenum,password);
     }

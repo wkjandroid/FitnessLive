@@ -37,7 +37,7 @@ public class CustomerDaoImp implements ICustomerDao {
 
     @Override
     public String addLIveUserStyle(int uid, List<LiveTheme> liveThemes) {
-        String delUserStyle = "delete from livethemes where u_id=?";
+        String delUserStyle = "delete from livethemes where uid=?";
         try{
             template.update(delUserStyle,new int[]{uid});
             BatchPreparedStatementSetter setter = new BatchPreparedStatementSetter() {
@@ -155,17 +155,17 @@ public class CustomerDaoImp implements ICustomerDao {
 
     @Override
     public String registerUser(String mobilenum, String password) {
-        String sql="insert into user (account,password,phonenum,createtime) " +
-                "values(?,?,?,?)";
+        String sql="insert into user (account,password,nickname,phonenum,createtime) " +
+                "values(?,?,?,?,?)";
         SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy/MM/dd:HH/mm/ss");
-        int updateRows = template.update(sql,getAccount(), password,mobilenum,dateFormat.format(new Date()));
-        return (updateRows>0)?"true":"false";
+        int updateRows = template.update(sql,getAccount(), password,"小灰灰",mobilenum,dateFormat.format(new Date()));
+        return (updateRows>0)?":true":":false";
     }
     public String  getAccount(){
         String sql="select * from user ORDER BY uid DESC limit 1";
         List<User> query = template.query(sql, userRowMapper);
         User user = query.get(0);
-        String account=String.valueOf(Integer.parseInt(user.getAccount())+1);
-        return account;
+        Long num=Long.parseLong(user.getAccount())+1;
+        return String.valueOf(num);
     }
 }

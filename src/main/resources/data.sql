@@ -22,7 +22,7 @@ CREATE TABLE `user` (
   `fansnum` bigint(200) DEFAULT 0 COMMENT '粉丝数',
   `attentionnum` bigint(200) DEFAULT 0 COMMENT '关注数',
   `livebigpic` VARCHAR(200) DEFAULT 0 COMMENT '直播大图',
-  `createtime` DATETIME DEFAULT 0 COMMENT '注册时间',
+  `createtime` DATETIME DEFAULT NULL COMMENT '注册时间',
   PRIMARY KEY (`uid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
 
@@ -63,7 +63,7 @@ CREATE TABLE `livethemes` (
 insert  into `user`(`account`,`password`,`nickname`,`role`) values('admin','admin','admin',1);
 insert  into `user`(`account`,`password`,`nickname`,`role`) values('admin_1','admin','admin-1',1);
 insert  into `user`(`account`,`password`,`nickname`,`role`) values('admin_2','admin','admin_2',1);
-insert  into `user`(`account`,`password`,`nickname`) values('17862901468','123456','小灰灰');
+insert  into `user`(`account`,`password`,`nickname`,`phonenum`) values('100000','123456','小灰灰','17862901468');
 
 insert  into `fans`(`fs_account`,`fs_nickname`,`fs_phonenum`,`uid`) values('admin','admin','17862901470',2);
 insert  into `attention`(`gz_account`,`gz_nickname`,`gz_phonenum`,`uid`) values('admin','admin','17862901470',2);
