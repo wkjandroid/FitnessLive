@@ -28,7 +28,7 @@ public interface ICustomerDao {
 
     List<LiveTheme> getAllLiveThemes();
 
-    String addLIveUserStyle(int uid, List<LiveTheme> liveThemes);
+    String addLiveUserStyle(int uid, List<LiveTheme> liveThemes);
 
     boolean checkUserExistByMobileNum(String phonenum);
 
@@ -40,4 +40,11 @@ public interface ICustomerDao {
 
     String registerUser(String mobilenum, String password);
 
+    boolean updateUserAmatarByAccount(String account, String amatarUrl);
+
+    boolean updateUserSexByAccount(String account, String content);
+
+    boolean updateUserNicknameByAccount(String account, String content);
+
+    boolean updateUserPersonalSignByAccount(String account, String content);
 }

@@ -19,10 +19,22 @@ public class User {
     private String amatar;
     private Boolean islive;
     private Integer age;
+    private String personalsign;
     private Integer fansnum;//粉丝数量
     private Integer grade;  //用户积分
     private Integer attentionnum;   //我的关注
     private String livebigpic;  //直播大图
+    private String token;
+    public User(){}
+
+    public String getPersonalsign() {
+        return personalsign;
+    }
+
+    public void setPersonalsign(String personalsign) {
+        this.personalsign = personalsign;
+    }
+
     public Integer getAttentionnum() {
         return attentionnum;
     }
@@ -47,7 +59,6 @@ public class User {
         this.grade = grade;
     }
 
-    private String token;
     public String getLivebigpic() {
         return livebigpic;
     }
@@ -55,7 +66,7 @@ public class User {
     public void setLivebigpic(String livebigpic) {
         this.livebigpic = livebigpic;
     }
-    public User(){}
+
     public Boolean getIslive() {
         return islive;
     }

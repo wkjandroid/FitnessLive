@@ -29,10 +29,13 @@ public  class UserRowMapper implements RowMapper {
         user.setPhonenum(rs.getString("phonenum"));
       /*  user.setRole(rs.getInt("role"));*/
         user.setAmatar(rs.getString("amatar"));
+        user.setIslive(rs.getBoolean("islive"));
         user.setAge(rs.getInt("age"));
+        user.setPersonalsign(rs.getString("personalsign"));
         user.setFansnum(rs.getInt("fansnum"));
         user.setGrade(rs.getInt("grade"));
         user.setAttentionnum(rs.getInt("attentionnum"));
+        user.setLivebigpic(rs.getString("livebigpic"));
         return user;
     }
 }

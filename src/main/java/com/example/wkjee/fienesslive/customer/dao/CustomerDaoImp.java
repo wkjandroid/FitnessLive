@@ -36,7 +36,7 @@ public class CustomerDaoImp implements ICustomerDao {
 
 
     @Override
-    public String addLIveUserStyle(int uid, List<LiveTheme> liveThemes) {
+    public String addLiveUserStyle(int uid, List<LiveTheme> liveThemes) {
         String delUserStyle = "delete from livethemes where uid=?";
         try{
             template.update(delUserStyle,new int[]{uid});
@@ -59,6 +59,34 @@ public class CustomerDaoImp implements ICustomerDao {
             e.printStackTrace();
             return "false";
        }
+    }
+
+    @Override
+    public boolean updateUserSexByAccount(String account, String content) {
+        String sql="update user set gender=? where account=?";
+        int update = template.update(sql,content, account);
+        return (update>0)?true:false;
+    }
+
+    @Override
+    public boolean updateUserAmatarByAccount(String account, String amatarUrl) {
+        String sql="update user set amatar=? where account=?";
+        int update = template.update(sql,amatarUrl, account);
+        return (update>0)?true:false;
+    }
+
+    @Override
+    public boolean updateUserNicknameByAccount(String account, String content) {
+        String sql="update user set nickname=? where account=?";
+        int update = template.update(sql,content, account);
+        return (update>0)?true:false;
+    }
+
+    @Override
+    public boolean updateUserPersonalSignByAccount(String account, String content) {
+        String sql="update user set personalsign=? where account=?";
+        int update = template.update(sql,content, account);
+        return (update>0)?true:false;
     }
 
     @Override

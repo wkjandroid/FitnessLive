@@ -17,11 +17,12 @@ CREATE TABLE `user` (
   `role` bigint(20)  DEFAULT NULL COMMENT '角色',
   `amatar` varchar(200) DEFAULT NULL COMMENT '头像',
   `age` bigint(20) DEFAULT 0 COMMENT '年龄',
+  `personalsign` VARCHAR(200) DEFAULT NULL COMMENT '个性签名',
   `islive` TINYINT DEFAULT 0 COMMENT '是否直播',
   `grade` bigint(200) DEFAULT 0 COMMENT '积分',
   `fansnum` bigint(200) DEFAULT 0 COMMENT '粉丝数',
   `attentionnum` bigint(200) DEFAULT 0 COMMENT '关注数',
-  `livebigpic` VARCHAR(200) DEFAULT 0 COMMENT '直播大图',
+  `livebigpic` VARCHAR(200) DEFAULT NULL COMMENT '直播大图',
   `createtime` DATETIME DEFAULT NULL COMMENT '注册时间',
   PRIMARY KEY (`uid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;

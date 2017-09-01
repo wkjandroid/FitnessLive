@@ -33,6 +33,6 @@ public class CustomerLiveChattingService {
     }
 
     public String addLiveUserStyle(int uid, List<LiveTheme> liveThemes) {
-        return customerDao.addLIveUserStyle(uid,liveThemes);
+        return customerDao.addLiveUserStyle(uid,liveThemes);
     }
 }

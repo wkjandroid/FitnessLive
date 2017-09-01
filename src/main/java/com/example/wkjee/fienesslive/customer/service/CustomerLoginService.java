@@ -3,10 +3,14 @@ package com.example.wkjee.fienesslive.customer.service;
 import com.alibaba.fastjson.JSON;
 import com.example.wkjee.fienesslive.customer.dao.ICustomerDao;
 import com.example.wkjee.fienesslive.manager.domain.User;
+import com.example.wkjee.fienesslive.tools.Base64DecoderTools;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Map;
 
 /**
@@ -16,6 +20,8 @@ import java.util.Map;
 public class CustomerLoginService {
     @Autowired
     private ICustomerDao customerDao;
+    @Autowired
+    private Environment env;
 
     public String qqLogin(User loginUser,HttpServletRequest request) {
         /* user.setAccount(openid); user.setToken("qq:"+token);user.setNickname
@@ -88,5 +94,37 @@ public class CustomerLoginService {
             return ":false";
         }
         return customerDao.registerUser(mobilenum,password);
+    }
+
+    public String updateUserAmatar(String account,String content) {
+        String amatarUrl=env.getProperty("update_user_amatart_url");
+        //localhost:8080/fitnesslive/   get_img_url
+        try {
+            File amatarfile = new File(amatarUrl+"/amatar/logo");
+            if (!amatarfile.exists()) amatarfile.mkdirs();
+            File amatarWritefile=new File(amatarUrl+"/amatar/logo/"+account+".jpg");
+            byte[] bytes = Base64DecoderTools.stringToBytes(content);
+            FileOutputStream outputStream = new FileOutputStream(amatarWritefile);
+            outputStream.write(bytes, 0, bytes.length);
+            outputStream.flush();
+            outputStream.close();
+            String getImageUrl=env.getProperty("get_img_url")+"/amatar/logo/"+account+".jpg";
+            boolean b = customerDao.updateUserAmatarByAccount(account, getImageUrl);
+            return (b)?"true:"+getImageUrl:"updatefailed";
+        }catch (Exception e){
+            e.printStackTrace();
+            return "updatefailed";
+        }
+    }
+
+    public String  updateUserSexByAccount(String account, String content) {
+        return (customerDao.updateUserSexByAccount(account,content))?"true:":"failed";
+    }
+
+    public String updateUserNicknameByAccount(String account, String content) {
+       return (customerDao.updateUserNicknameByAccount(account,content))?"true:":"failed";
+    }
+    public String updateUserPersonalSignByAccount(String account, String content) {
+        return (customerDao.updateUserPersonalSignByAccount(account,content))?"true:":"failed";
     }
 }

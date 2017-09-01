@@ -18,7 +18,7 @@ public class LiveThemeRowMapper implements RowMapper {
         LiveTheme liveTheme=new LiveTheme();
         liveTheme.setLtid(rs.getInt("lt_id"));
         liveTheme.setLttheme(rs.getString("lt_name"));
-        liveTheme.setUid(rs.getInt("u_id"));
+        liveTheme.setUid(rs.getInt("uid"));
         liveTheme.setIslive(rs.getInt("lt_islive"));
         return liveTheme;
     }

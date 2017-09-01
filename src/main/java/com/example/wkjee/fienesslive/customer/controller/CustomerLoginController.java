@@ -1,16 +1,18 @@
 package com.example.wkjee.fienesslive.customer.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.example.wkjee.fienesslive.customer.dao.ICustomerDao;
 import com.example.wkjee.fienesslive.customer.service.CustomerLoginService;
 import com.example.wkjee.fienesslive.manager.domain.User;
+import com.example.wkjee.fienesslive.tools.Base64DecoderTools;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
+import java.io.*;
 
 /**
  * Created by wkj_pc on 2017/6/10.
@@ -20,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 public class CustomerLoginController {
     @Autowired
     private CustomerLoginService customerLoginService;
+
     @ResponseBody
     @RequestMapping(value = "/toLogin",method = RequestMethod.POST)
     public String login(@RequestParam(value = "user", defaultValue = "")String user , HttpServletRequest request){
@@ -71,5 +74,24 @@ public class CustomerLoginController {
     public String registerUser(@RequestParam(value = "mobilenum",defaultValue = "")String mobilenum ,
                                @RequestParam(value = "password",defaultValue = "")String password ){
         return customerLoginService.registerUser(mobilenum,password);
+    }
+
+    /** 修改用户头像 */
+    @ResponseBody
+    @RequestMapping(value = "updateUserInfo",method = RequestMethod.POST)
+    public String updateUserInfo(HttpServletRequest request) throws IOException {
+        String account = request.getParameter("account");
+        String content = request.getParameter("content");
+        String type = request.getParameter("type");
+        if (type.equals("amatar")){
+            return customerLoginService.updateUserAmatar(account,content);
+        }else if (type.equals("sex")){
+            return customerLoginService.updateUserSexByAccount(account,content);
+        }else if (type.equals("nickname")){
+            return customerLoginService.updateUserNicknameByAccount(account,content);
+        }else if (type.equals("personalsign")){
+            return customerLoginService.updateUserPersonalSignByAccount(account,content);
+        }
+        return null;
     }
 }
