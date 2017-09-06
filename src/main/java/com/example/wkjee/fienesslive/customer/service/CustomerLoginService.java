@@ -96,27 +96,6 @@ public class CustomerLoginService {
         return customerDao.registerUser(mobilenum,password);
     }
 
-    public String updateUserAmatar(String account,String content) {
-        String amatarUrl=env.getProperty("update_user_amatart_url");
-        //localhost:8080/fitnesslive/   get_img_url
-        try {
-            File amatarfile = new File(amatarUrl+"/amatar/logo");
-            if (!amatarfile.exists()) amatarfile.mkdirs();
-            File amatarWritefile=new File(amatarUrl+"/amatar/logo/"+account+".jpg");
-            byte[] bytes = Base64DecoderTools.stringToBytes(content);
-            FileOutputStream outputStream = new FileOutputStream(amatarWritefile);
-            outputStream.write(bytes, 0, bytes.length);
-            outputStream.flush();
-            outputStream.close();
-            String getImageUrl=env.getProperty("get_img_url")+"/amatar/logo/"+account+".jpg";
-            boolean b = customerDao.updateUserAmatarByAccount(account, getImageUrl);
-            return (b)?"true:"+getImageUrl:"updatefailed";
-        }catch (Exception e){
-            e.printStackTrace();
-            return "updatefailed";
-        }
-    }
-
     public String  updateUserSexByAccount(String account, String content) {
         return (customerDao.updateUserSexByAccount(account,content))?"true:":"failed";
     }
@@ -127,4 +106,38 @@ public class CustomerLoginService {
     public String updateUserPersonalSignByAccount(String account, String content) {
         return (customerDao.updateUserPersonalSignByAccount(account,content))?"true:":"failed";
     }
+
+    public String updateUserLiveBigPicByAccount(String account, String content) {
+        String bigPicUrl=env.getProperty("fitnesslive_img_save_url")+"/img/livebigpic";
+        if (!setLocalPicSave( content,bigPicUrl,bigPicUrl+"/"+account+"/.jpg"))
+            return "updatefailed";
+        String getImageUrl=env.getProperty("get_img_url")+"/img/livebigpic/"+account+".jpg";
+        boolean b = customerDao.updateUserLiveBigPicByAccount(account, getImageUrl);
+        return (b)?"true:"+getImageUrl:"updatefailed";
+    }
+    public String updateUserAmatar(String account,String content) {
+        String amatarUrl=env.getProperty("fitnesslive_img_save_url")+"/img/amatar";
+        if (!setLocalPicSave( content,amatarUrl,amatarUrl+"/"+account+".jpg"))
+            return "updatefailed";
+        String getImageUrl=env.getProperty("get_img_url")+"/img/amatar/"+account+".jpg";
+        boolean b = customerDao.updateUserAmatarByAccount(account, getImageUrl);
+        return (b)?"true:"+getImageUrl:"updatefailed";
+    }
+    public boolean setLocalPicSave(String content,String dirUrl,String imgUrl) {
+        try {
+            File amatarfile = new File(dirUrl);
+            if (!amatarfile.exists()) amatarfile.mkdirs();
+            File amatarWritefile=new File(imgUrl);
+            byte[] bytes = Base64DecoderTools.stringToBytes(content);
+            FileOutputStream outputStream = new FileOutputStream(amatarWritefile);
+            outputStream.write(bytes, 0, bytes.length);
+            outputStream.flush();
+            outputStream.close();
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
 }

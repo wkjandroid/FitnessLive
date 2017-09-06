@@ -3,9 +3,7 @@ package com.example.wkjee.fienesslive.customer.controller;
 import com.alibaba.fastjson.JSON;
 import com.example.wkjee.fienesslive.customer.service.CustomerLoginService;
 import com.example.wkjee.fienesslive.manager.domain.User;
-import com.example.wkjee.fienesslive.tools.Base64DecoderTools;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -91,6 +89,8 @@ public class CustomerLoginController {
             return customerLoginService.updateUserNicknameByAccount(account,content);
         }else if (type.equals("personalsign")){
             return customerLoginService.updateUserPersonalSignByAccount(account,content);
+        }else if (type.equals("livebigimg")){
+            return customerLoginService.updateUserLiveBigPicByAccount(account,content);
         }
         return null;
     }

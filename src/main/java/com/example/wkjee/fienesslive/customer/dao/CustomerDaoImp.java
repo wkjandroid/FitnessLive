@@ -6,7 +6,6 @@ import com.example.wkjee.fienesslive.tools.DataSourceTools;
 import com.example.wkjee.fienesslive.tools.FansRowMapper;
 import com.example.wkjee.fienesslive.tools.LiveThemeRowMapper;
 import com.example.wkjee.fienesslive.tools.UserRowMapper;
-import com.mysql.fabric.xmlrpc.base.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -65,6 +64,13 @@ public class CustomerDaoImp implements ICustomerDao {
     public boolean updateUserSexByAccount(String account, String content) {
         String sql="update user set gender=? where account=?";
         int update = template.update(sql,content, account);
+        return (update>0)?true:false;
+    }
+
+    @Override
+    public boolean updateUserLiveBigPicByAccount(String account, String getImageUrl) {
+        String sql="update user set livebigpic=? where account=?";
+        int update = template.update(sql,getImageUrl, account);
         return (update>0)?true:false;
     }
 

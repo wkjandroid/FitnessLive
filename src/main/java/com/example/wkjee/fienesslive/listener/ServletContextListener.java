@@ -1,14 +1,10 @@
 package com.example.wkjee.fienesslive.listener;
 
 import com.example.wkjee.fienesslive.manager.domain.User;
-import org.springframework.web.socket.WebSocketSession;
-
 import javax.servlet.ServletContextEvent;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**

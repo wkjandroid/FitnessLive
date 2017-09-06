@@ -3,8 +3,6 @@ package com.example.wkjee.fienesslive.manager.service;
 
 import com.example.wkjee.fienesslive.manager.dao.IUserDao;
 import com.example.wkjee.fienesslive.manager.domain.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -49,7 +47,6 @@ public class LoginService {
             loginMap.put("result","密码不能为空！");
             return loginMap;
         }else{
-            //shujukuyanzheng
             if (null!=userDao.queryUserByAccountAndPassword(loginUser.getAccount(),loginUser.getPassword())){
 
                 Map<User,HttpSession> userMap= (Map<User, HttpSession>) request.
@@ -81,7 +78,6 @@ public class LoginService {
             }
             verifyMap.put("result","1");
         }
-        //System.out.println(verifyCode+"---"+toVerifyCode+verifyCode.equalsIgnoreCase(toVerifyCode));
         return verifyMap;
     }
 }

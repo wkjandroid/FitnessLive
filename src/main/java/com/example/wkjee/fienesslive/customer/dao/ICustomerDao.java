@@ -47,4 +47,6 @@ public interface ICustomerDao {
     boolean updateUserNicknameByAccount(String account, String content);
 
     boolean updateUserPersonalSignByAccount(String account, String content);
+
+    boolean updateUserLiveBigPicByAccount(String account, String getImageUrl);
 }
