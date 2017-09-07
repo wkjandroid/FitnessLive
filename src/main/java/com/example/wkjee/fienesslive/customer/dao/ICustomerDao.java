@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface ICustomerDao {
 
-    boolean checkUserExist(String account);
+    boolean checkUserByNameExist(String account);
 
     boolean registerQQUser(User loginUser);
 
@@ -49,4 +49,6 @@ public interface ICustomerDao {
     boolean updateUserPersonalSignByAccount(String account, String content);
 
     boolean updateUserLiveBigPicByAccount(String account, String getImageUrl);
+
+    User getUserInfoByName(String name);
 }

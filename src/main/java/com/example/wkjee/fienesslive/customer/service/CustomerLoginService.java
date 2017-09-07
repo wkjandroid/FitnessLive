@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by wkj_pc on 2017/6/16.
@@ -26,11 +27,11 @@ public class CustomerLoginService {
     public String qqLogin(User loginUser,HttpServletRequest request) {
         /* user.setAccount(openid); user.setToken("qq:"+token);user.setNickname
         user.setGender user.setAmatar*/
-        if (!customerDao.checkUserExist(loginUser.getAccount())){
+        if (!customerDao.checkUserByNameExist(loginUser.getAccount())){
             customerDao.registerQQUser(loginUser);
         }
         verifyUser(loginUser,request);
-        User user = customerDao.getUserInfoByAccount(loginUser.getAccount());
+        User user = customerDao.getUserInfoByName(loginUser.getAccount());
         return JSON.toJSONString(user);
     }
     public String  customerLogin(User loginUser,HttpServletRequest request) {
@@ -46,10 +47,10 @@ public class CustomerLoginService {
         return JSON.toJSONString(user);
     }
     public String weiboLogin(User loginUser, HttpServletRequest request) {
-        if (!customerDao.checkUserExist(loginUser.getAccount())){
+        if (!customerDao.checkUserByNameExist(loginUser.getAccount())){
             customerDao.registerWeiboUser(loginUser);
         }
-        User user = customerDao.getUserInfoByAccount(loginUser.getAccount());
+        User user = customerDao.getUserInfoByName(loginUser.getName());
         return JSON.toJSONString(user);
     }
     public boolean wechatLogin(User loginUser,HttpServletRequest request) {
@@ -117,9 +118,11 @@ public class CustomerLoginService {
     }
     public String updateUserAmatar(String account,String content) {
         String amatarUrl=env.getProperty("fitnesslive_img_save_url")+"/img/amatar";
-        if (!setLocalPicSave( content,amatarUrl,amatarUrl+"/"+account+".jpg"))
+        UUID uuid = UUID.randomUUID();
+        String picname = uuid.toString();
+        if (!setLocalPicSave( content,amatarUrl,amatarUrl+"/"+account+picname+".jpg"))
             return "updatefailed";
-        String getImageUrl=env.getProperty("get_img_url")+"/img/amatar/"+account+".jpg";
+        String getImageUrl=env.getProperty("get_img_url")+"/img/amatar/"+account+picname+".jpg";
         boolean b = customerDao.updateUserAmatarByAccount(account, getImageUrl);
         return (b)?"true:"+getImageUrl:"updatefailed";
     }
