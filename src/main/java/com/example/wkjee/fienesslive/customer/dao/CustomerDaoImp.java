@@ -120,10 +120,13 @@ public class CustomerDaoImp implements ICustomerDao {
 
     @Override
     public boolean registerWeiboUser(User loginUser) {
-        String sql="insert into user (account,name,gender,nickname,phonenum,amatar) values(?,?,?,?,?,?)";
-        int updateRows = template.update(sql, new String[]{loginUser.getAccount(), loginUser.getName(),
+        SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy/MM/dd:HH/mm/ss");
+        String sql="insert into user (account,name,gender,nickname,phonenum,amatar,createtime) values(?,?,?,?,?,?,?)";
+        template.update(sql, loginUser.getName(), loginUser.getName(),
                 loginUser.getGender(),
-                loginUser.getNickname(), loginUser.getPhonenum(),loginUser.getAmatar()});
+                loginUser.getNickname(), loginUser.getPhonenum(),loginUser.getAmatar(),dateFormat.format(new Date()));
+        String sql1="UPDATE user SET account=? WHERE account=?";
+        int updateRows = template.update(sql1,getAccount(),loginUser.getName());
         return (updateRows>0)?true:false;
     }
 
@@ -133,7 +136,12 @@ public class CustomerDaoImp implements ICustomerDao {
         List query = template.query(sql, new String[]{account}, userRowMapper);
         return (query.size()>0)?((User)query.get(0)):null;
     }
-
+    @Override
+    public User getUserInfoByName(String name) {
+        String sql="select * from user where name=?";
+        List query = template.query(sql, new String[]{name}, userRowMapper);
+        return (query.size()>0)?((User)query.get(0)):null;
+    }
     @Override
     public User getUserInfoByMobile(String phonenum) {
         String sql="select * from user where phonenum=?";
@@ -160,16 +168,19 @@ public class CustomerDaoImp implements ICustomerDao {
     public boolean registerQQUser(User loginUser) {
         /* user.setAccount(openid); user.setToken("qq:"+token);user.setNickname
         user.setGender user.setAmatar*/
-        String sql="insert into user (account,gender,nickname,amatar) values(?,?,?,?)";
-        int updateRows = template.update(sql, loginUser.getAccount(), loginUser.getGender(),
-                loginUser.getNickname(), loginUser.getAmatar());
+        SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy/MM/dd:HH/mm/ss");
+        String sql="insert into user (account,name,gender,nickname,amatar,createtime) values(?,?,?,?,?,?)";
+        template.update(sql, loginUser.getAccount(), loginUser.getAccount(),loginUser.getGender(),
+                loginUser.getNickname(), loginUser.getAmatar(),dateFormat.format(new Date()));
+        String sql1="UPDATE user SET account=? WHERE account=?";
+        int updateRows = template.update(sql1,getAccount(),loginUser.getAccount());
         return (updateRows>0)?true:false;
     }
 
     @Override
-    public boolean checkUserExist(String account) {
-        String sql="select * from user where account=?";
-        List query = template.query(sql,new String[]{account}, userRowMapper);
+    public boolean checkUserByNameExist(String name) {
+        String sql="select * from user where name=?";
+        List query = template.query(sql,new String[]{name}, userRowMapper);
         return (query.size()>0)?true:false;
     }
 
@@ -191,15 +202,18 @@ public class CustomerDaoImp implements ICustomerDao {
     public String registerUser(String mobilenum, String password) {
         String sql="insert into user (account,password,nickname,phonenum,createtime) " +
                 "values(?,?,?,?,?)";
+        String sql1="UPDATE user SET account=? WHERE account=?";
         SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy/MM/dd:HH/mm/ss");
-        int updateRows = template.update(sql,getAccount(), password,"小灰灰",mobilenum,dateFormat.format(new Date()));
+        template.update(sql,mobilenum, password,"小灰灰",
+                mobilenum,dateFormat.format(new Date()));
+        int updateRows = template.update(sql1,getAccount(),mobilenum);
         return (updateRows>0)?":true":":false";
     }
     public String  getAccount(){
         String sql="select * from user ORDER BY uid DESC limit 1";
         List<User> query = template.query(sql, userRowMapper);
         User user = query.get(0);
-        Long num=Long.parseLong(user.getAccount())+1;
+        long num=user.getUid()+100000;
         return String.valueOf(num);
     }
 }
