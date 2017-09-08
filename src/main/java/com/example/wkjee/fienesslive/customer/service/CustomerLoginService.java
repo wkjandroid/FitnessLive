@@ -110,9 +110,10 @@ public class CustomerLoginService {
 
     public String updateUserLiveBigPicByAccount(String account, String content) {
         String bigPicUrl=env.getProperty("fitnesslive_img_save_url")+"/img/livebigpic";
-        if (!setLocalPicSave( content,bigPicUrl,bigPicUrl+"/"+account+"/.jpg"))
+        UUID uuid=UUID.randomUUID();
+        if (!setLocalPicSave( content,bigPicUrl,bigPicUrl+"/"+account+uuid.toString()+".jpg"))
             return "updatefailed";
-        String getImageUrl=env.getProperty("get_img_url")+"/img/livebigpic/"+account+".jpg";
+        String getImageUrl=env.getProperty("get_img_url")+"/img/livebigpic/"+account+uuid.toString()+".jpg";
         boolean b = customerDao.updateUserLiveBigPicByAccount(account, getImageUrl);
         return (b)?"true:"+getImageUrl:"updatefailed";
     }
