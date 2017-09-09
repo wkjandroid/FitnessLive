@@ -67,6 +67,7 @@ public class CustomerLoginController {
                                      @RequestParam(value = "password",defaultValue = "")String password ){
         return customerLoginService.updateUserPassword(mobilenum,password);
     }
+    /** 用户注册*/
     @RequestMapping(value = "/registerUser")
     @ResponseBody
     public String registerUser(@RequestParam(value = "mobilenum",defaultValue = "")String mobilenum ,
@@ -74,14 +75,14 @@ public class CustomerLoginController {
         return customerLoginService.registerUser(mobilenum,password);
     }
 
-    /** 修改用户头像 */
+    /** 修改用户信息*/
     @ResponseBody
     @RequestMapping(value = "updateUserInfo",method = RequestMethod.POST)
     public String updateUserInfo(HttpServletRequest request) throws IOException {
         String account = request.getParameter("account");
         String content = request.getParameter("content");
         String type = request.getParameter("type");
-        if (type.equals("amatar")){
+        if (type.equals("amatar")){ //头像
             return customerLoginService.updateUserAmatar(account,content);
         }else if (type.equals("sex")){
             return customerLoginService.updateUserSexByAccount(account,content);
@@ -89,7 +90,7 @@ public class CustomerLoginController {
             return customerLoginService.updateUserNicknameByAccount(account,content);
         }else if (type.equals("personalsign")){
             return customerLoginService.updateUserPersonalSignByAccount(account,content);
-        }else if (type.equals("livebigimg")){
+        }else if (type.equals("livebigimg")){       //直播大图
             return customerLoginService.updateUserLiveBigPicByAccount(account,content);
         }
         return null;

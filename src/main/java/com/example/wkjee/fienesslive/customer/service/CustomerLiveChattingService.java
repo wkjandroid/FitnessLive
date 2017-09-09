@@ -32,7 +32,7 @@ public class CustomerLiveChattingService {
         return customerDao.getAllLiveThemes();
     }
 
-    public String addLiveUserStyle(int uid, List<LiveTheme> liveThemes) {
-        return customerDao.addLiveUserStyle(uid,liveThemes);
+    public String updateLiveUserStyle(int uid, List<String> liveThemes) {
+        return (customerDao.updateUserLiveThemes(uid,liveThemes))?"true":"failed";
     }
 }

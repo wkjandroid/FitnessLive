@@ -28,8 +28,6 @@ public interface ICustomerDao {
 
     List<LiveTheme> getAllLiveThemes();
 
-    String addLiveUserStyle(int uid, List<LiveTheme> liveThemes);
-
     boolean checkUserExistByMobileNum(String phonenum);
 
     boolean getUserByMobileAndPwd(User loginUser);
@@ -51,4 +49,7 @@ public interface ICustomerDao {
     boolean updateUserLiveBigPicByAccount(String account, String getImageUrl);
 
     User getUserInfoByName(String name);
+
+    boolean updateUserLiveThemes(int uid, List<String> liveThemes);
+
 }
