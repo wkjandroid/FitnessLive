@@ -22,7 +22,6 @@ public class CustomerLiveController {
 
     @Autowired
     CustomerLiveChattingService liveService;
-
     /**
      * 获取全部直播用户的信息，并返回
      */
@@ -32,7 +31,6 @@ public class CustomerLiveController {
         List<User> liveUsers = liveService.getAllLiveUserInfo();
         return JSON.toJSONString(liveUsers);
     }
-
     /**
      * 获取全部直播用户的直播风格，并返回
      */
@@ -42,16 +40,15 @@ public class CustomerLiveController {
         List<LiveTheme> liveThemes = liveService.getUserLiveThemes();
         return JSON.toJSONString(liveThemes);
     }
-
     /**
      * 添加直播用户的直播风格
      */
-    @RequestMapping(value = "/addLiveUserStyle")
+    @RequestMapping(value = "/updateLiveUserStyle")
     @ResponseBody
     public String addLiveUserStyle(@RequestParam(value = "uid", defaultValue = "") String uid,
                                    @RequestParam(value = "livethemes", defaultValue = "") String livethemes) {
-        List<LiveTheme> liveThemes = JSON.parseObject(livethemes, new TypeReference<List<LiveTheme>>(){});
-        return liveService.addLiveUserStyle(Integer.parseInt(uid),liveThemes);
+        List<String> themes = JSON.parseObject(livethemes, new TypeReference<List<String>>(){});
+        return liveService.updateLiveUserStyle(Integer.parseInt(uid),themes);
     }
 
 }

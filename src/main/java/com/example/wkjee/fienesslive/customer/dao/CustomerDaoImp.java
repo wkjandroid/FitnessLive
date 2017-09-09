@@ -33,18 +33,17 @@ public class CustomerDaoImp implements ICustomerDao {
     private JdbcTemplate wbTemplate=new JdbcTemplate(DataSourceTools.getDataSource());
     private FansRowMapper fansRowMapper=new FansRowMapper();
 
-
     @Override
-    public String addLiveUserStyle(int uid, List<LiveTheme> liveThemes) {
-        String delUserStyle = "delete from livethemes where uid=?";
+    public boolean updateUserLiveThemes(int uid, List<String> liveThemes) {
+        String delUserLiveTheme = "delete from livethemes where uid=?";
+        template.update(delUserLiveTheme,uid);
         try{
-            template.update(delUserStyle,new int[]{uid});
             BatchPreparedStatementSetter setter = new BatchPreparedStatementSetter() {
                 @Override
                 public void setValues(PreparedStatement ps, int i) throws SQLException {
-                    ps.setString(1,liveThemes.get(i).getLttheme());
+                    ps.setString(1,liveThemes.get(i));
                     ps.setBoolean(2,false);
-                    ps.setInt(3,liveThemes.get(i).getUid());
+                    ps.setInt(3,uid);
                 }
                 @Override
                 public int getBatchSize() {
@@ -53,13 +52,12 @@ public class CustomerDaoImp implements ICustomerDao {
             };
             String sql="INSERT INTO livethemes(lt_name,lt_islive,uid) values(?,?,?)";
             template.batchUpdate(sql, setter);
-            return "true";
-       }catch (Exception e){
+            return true;
+        }catch (Exception e){
             e.printStackTrace();
-            return "false";
-       }
+            return false;
+        }
     }
-
     @Override
     public boolean updateUserSexByAccount(String account, String content) {
         String sql="update user set gender=? where account=?";
