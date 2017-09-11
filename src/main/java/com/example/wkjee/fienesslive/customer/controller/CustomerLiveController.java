@@ -71,6 +71,7 @@ public class CustomerLiveController {
             System.out.print(file.getBytes().length);
             outputStream.write(file.getBytes());
             outputStream.flush();
+
             outputStream.close();
         }catch(Exception e){
             e.printStackTrace();
