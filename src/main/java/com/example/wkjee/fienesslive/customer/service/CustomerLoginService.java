@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.example.wkjee.fienesslive.customer.dao.ICustomerDao;
 import com.example.wkjee.fienesslive.manager.domain.User;
 import com.example.wkjee.fienesslive.tools.Base64DecoderTools;
+import com.example.wkjee.fienesslive.tools.FileSaveTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -109,39 +110,22 @@ public class CustomerLoginService {
     }
 
     public String updateUserLiveBigPicByAccount(String account, String content) {
-        String bigPicUrl=env.getProperty("fitnesslive_img_save_url")+"/img/livebigpic";
         UUID uuid=UUID.randomUUID();
-        if (!setLocalPicSave( content,bigPicUrl,bigPicUrl+"/"+account+uuid.toString()+".jpg"))
+        String bigPicUrl=env.getProperty("fitnesslive_img_save_url")+"/img/livebigpic/"+account+uuid.toString()+".jpg";
+        if (!FileSaveTools.setLocalPicSave( content,bigPicUrl))
             return "updatefailed";
         String getImageUrl=env.getProperty("get_img_url")+"/img/livebigpic/"+account+uuid.toString()+".jpg";
         boolean b = customerDao.updateUserLiveBigPicByAccount(account, getImageUrl);
         return (b)?"true:"+getImageUrl:"updatefailed";
     }
     public String updateUserAmatar(String account,String content) {
-        String amatarUrl=env.getProperty("fitnesslive_img_save_url")+"/img/amatar";
         UUID uuid = UUID.randomUUID();
-        String picname = uuid.toString();
-        if (!setLocalPicSave( content,amatarUrl,amatarUrl+"/"+account+picname+".jpg"))
+        String amatarUrl=env.getProperty("fitnesslive_img_save_url")+"/img/amatar/"+account+uuid.toString()+".jpg";
+        if (!FileSaveTools.setLocalPicSave( content,amatarUrl))
             return "updatefailed";
-        String getImageUrl=env.getProperty("get_img_url")+"/img/amatar/"+account+picname+".jpg";
+        String getImageUrl=env.getProperty("get_img_url")+"/img/amatar/"+account+uuid.toString()+".jpg";
         boolean b = customerDao.updateUserAmatarByAccount(account, getImageUrl);
         return (b)?"true:"+getImageUrl:"updatefailed";
-    }
-    public boolean setLocalPicSave(String content,String dirUrl,String imgUrl) {
-        try {
-            File amatarfile = new File(dirUrl);
-            if (!amatarfile.exists()) amatarfile.mkdirs();
-            File amatarWritefile=new File(imgUrl);
-            byte[] bytes = Base64DecoderTools.stringToBytes(content);
-            FileOutputStream outputStream = new FileOutputStream(amatarWritefile);
-            outputStream.write(bytes, 0, bytes.length);
-            outputStream.flush();
-            outputStream.close();
-        }catch (Exception e){
-            e.printStackTrace();
-            return false;
-        }
-        return true;
     }
 
 }

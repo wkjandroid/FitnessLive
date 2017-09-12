@@ -52,4 +52,5 @@ public interface ICustomerDao {
 
     boolean updateUserLiveThemes(int uid, List<String> liveThemes);
 
+    boolean uploadUserVideo(String title, String videourl, String thumbnail1, int uid);
 }

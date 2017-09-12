@@ -2,6 +2,7 @@ package com.example.wkjee.fienesslive.manager.service;
 
 
 import com.example.wkjee.fienesslive.manager.dao.IUserDao;
+import com.example.wkjee.fienesslive.manager.domain.UploadVideo;
 import com.example.wkjee.fienesslive.manager.domain.User;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +10,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,6 +23,7 @@ public class LoginService {
     private Map<String, Object> loginMap=null;
     @Resource
     private IUserDao userDao;
+
 
     public Map<String, Object> checkLogin(HttpServletRequest request) {
         User loginUser = (User) request.getSession().getAttribute("loginUser");
@@ -79,5 +82,13 @@ public class LoginService {
             verifyMap.put("result","1");
         }
         return verifyMap;
+    }
+
+    public void getAllUploadVideos() {
+        List<UploadVideo> allUploadVideos = userDao.getAllUploadVideos();
+        for (int i=0;i<allUploadVideos.size();i++){
+            System.out.println(allUploadVideos.get(i).getThumbnailurl());
+        }
+
     }
 }

@@ -1,6 +1,8 @@
 package com.example.wkjee.fienesslive.manager.dao;
 
+import com.example.wkjee.fienesslive.manager.domain.UploadVideo;
 import com.example.wkjee.fienesslive.manager.domain.User;
+import com.example.wkjee.fienesslive.tools.UploadVideoMapper;
 import com.example.wkjee.fienesslive.tools.UserRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,20 +18,31 @@ import java.util.List;
 public class UserDaoImp implements IUserDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
-   @Resource
+    @Resource
     private UserRowMapper userRowMapper;
+
+    @Autowired
+    private UploadVideoMapper uploadVideoMapper;
+
+    @Override
+    public List<UploadVideo> getAllUploadVideos() {
+        String sql="select uv_id,uv_title,uv_videourl,uv_thumbnailurl,uv_uploadtime,uid from uploadvideos";
+        List query = jdbcTemplate.query(sql, uploadVideoMapper);
+        return (query.size()>0)?query:null;
+    }
+
     @Override
     public User queryUserByAccountAndPassword(String account, String password) {
         String sql="select uid,account,name,password,gender,nickname,email,idcard,phonenum," +
                 "role,amatar,age,personalsign,islive,grade,fansnum,attentionnum,livebigpic " +
-                "from user where account=? and password=?";
+                "from users where account=? and password=?";
         List query = jdbcTemplate.query(sql, new String[]{account, password}, userRowMapper);
         return (query.size()>0)?(User)query.get(0):null;
     }
     @Override
     public User queryUserByEmail(String email) {
         String sql="select uid,account,name,password,gender,nickname,email,idcard,phonenum," +
-                "role,amatar,age,personalsign,islive,grade,fansnum,attentionnum,livebigpic  from user where email=?";
+                "role,amatar,age,personalsign,islive,grade,fansnum,attentionnum,livebigpic  from users where email=?";
         List<User> query=jdbcTemplate.query(sql,new String[]{email}, userRowMapper);
         return (query.size()>0)?(User)query.get(0):null;
     }
@@ -37,7 +50,7 @@ public class UserDaoImp implements IUserDao {
     @Override
     public User queryUserByIdcard(String idcard) {
         String sql="SELECT uid,account,name,password,gender,nickname,email,idcard,phonenum," +
-                "role,amatar,age,personalsign,islive,grade,fansnum,attentionnum,livebigpic  FROM user where idcard=?";
+                "role,amatar,age,personalsign,islive,grade,fansnum,attentionnum,livebigpic  FROM users where idcard=?";
         List query = jdbcTemplate.query(sql, new String[]{idcard}, userRowMapper);
         return (query.size()>0)?(User)query.get(0):null;
     }
@@ -45,7 +58,7 @@ public class UserDaoImp implements IUserDao {
     @Override
     public User queryUserByPhonenum(String phonenum) {
         String sql="select uid,account,name,password,gender,nickname,email,idcard,phonenum," +
-                "role,amatar,age,personalsign,islive,grade,fansnum,attentionnum,livebigpic  from user where phonenum=?";
+                "role,amatar,age,personalsign,islive,grade,fansnum,attentionnum,livebigpic  from users where phonenum=?";
         List query = jdbcTemplate.query(sql, new String[]{phonenum}, userRowMapper);
         return (query.size()>0)?(User)query.get(0):null;
     }
@@ -53,14 +66,14 @@ public class UserDaoImp implements IUserDao {
     @Override
     public User queryUserByAccount(String account) {
         String sql="select uid,account,name,password,gender,nickname,email,idcard,phonenum," +
-                "role,amatar,age,personalsign ,islive,grade,fansnum,attentionnum,livebigpic from user where account=?";
+                "role,amatar,age,personalsign ,islive,grade,fansnum,attentionnum,livebigpic from users where account=?";
         List queryList = jdbcTemplate.query(sql, new String[]{account}, userRowMapper);
         return (queryList.size()>0)?(User)queryList.get(0):null;
     }
 
     @Override
     public boolean deleteUserByAccount(String account) {
-        String sql="delete from user where account=?";
+        String sql="delete from users where account=?";
         int deleteRows = jdbcTemplate.update(sql, account);
         return (deleteRows>0)?true:false;
     }
@@ -68,7 +81,7 @@ public class UserDaoImp implements IUserDao {
     @Override
     public User queryUserById(int id) {
         String sql="select uid,account,name,password,gender,nickname,email,idcard,phonenum," +
-                "role,amatar,age,islive,grade,fansnum,attentionnum,livebigpic  from user where uid=?";
+                "role,amatar,age,islive,grade,fansnum,attentionnum,livebigpic  from users where uid=?";
         List query = jdbcTemplate.query(sql,new Integer[]{id}, userRowMapper);
         return (query.size()>0)?(User)query.get(0):null;
     }
@@ -82,7 +95,7 @@ public class UserDaoImp implements IUserDao {
     }
     @Override
     public boolean saveUser(User user) {
-        String sql="insert into user (account,name,password,gender,nickname,email,idcard,phonenum,role) " +
+        String sql="insert into users (account,name,password,gender,nickname,email,idcard,phonenum,role) " +
                 "values(?,?,?,?,?,?,?,?,?)";
         int updateRows = jdbcTemplate.update(sql,
                 new String[]{user.getAccount(), user.getName(), user.getPassword(), user.getGender()
@@ -93,14 +106,14 @@ public class UserDaoImp implements IUserDao {
 
     @Override
     public boolean deleteUserById(int id) {
-        String sql="DELETE FROM USER WHERE uid=?";
+        String sql="DELETE FROM USERS WHERE uid=?";
         int deleteRows = jdbcTemplate.update(sql, id);
         return (deleteRows>0)?true:false;
     }
 
     @Override
     public boolean updateUser(User user) {
-        String sql="update user set account=?,name=?,password=?,gender=?," +
+        String sql="update users set account=?,name=?,password=?,gender=?," +
                 "nickname=?,email=?,idcard=?,phonenum=?,role=?,age=? WHERE uid=?";
         int updateRows = jdbcTemplate.update(sql, new String[]{user.getAccount(), user.getName(),
                 user.getPassword(), user.getGender(), user.getNickname(), user.getEmail(),
@@ -111,14 +124,14 @@ public class UserDaoImp implements IUserDao {
 
     @Override
     public boolean deleteUser() {
-        int deleteRows = jdbcTemplate.update("delete * from user");
+        int deleteRows = jdbcTemplate.update("delete * from users");
         return (deleteRows>0)?true:false;
     }
 
     @Override
     public List<User> queryUserAll() {
         String sql="select uid,account,name,password,gender,nickname,email,idcard,phonenum," +
-                "role,amatar,age,personalsign,islive,grade,fansnum,attentionnum,livebigpic  from user";
+                "role,amatar,age,personalsign,islive,grade,fansnum,attentionnum,livebigpic  from users";
         List<User> users = jdbcTemplate.queryForList(sql, User.class);
         return (users.size()>0)?users:null;
     }

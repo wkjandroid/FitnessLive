@@ -2,9 +2,9 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`fitnesslive.db` /*!40100 DEFAULT CHARAC
 
 USE `fitnesslive.db`;
 
-DROP TABLE IF EXISTS `user`;
+DROP TABLE IF EXISTS `users`;
 
-CREATE TABLE `user` (
+CREATE TABLE `users` (
   `uid` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'UID',
   `account` varchar(200) NOT NULL COMMENT '账户',
   `name` varchar(200)  DEFAULT NULL COMMENT '姓名',
@@ -39,9 +39,9 @@ CREATE TABLE `fans` (
   PRIMARY KEY (`fs_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `attention`;
+DROP TABLE IF EXISTS `attentions`;
 
-CREATE TABLE `attention` (
+CREATE TABLE `attentions` (
   `gz_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'FID',
   `gz_account` varchar(200) NOT NULL COMMENT '账户',
   `gz_nickname` varchar(200)  DEFAULT NULL COMMENT '昵称',
@@ -61,13 +61,25 @@ CREATE TABLE `livethemes` (
   PRIMARY KEY (`lt_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
 
-insert  into `user`(`account`,`password`,`nickname`,`role`) values('admin','admin','admin',1);
-insert  into `user`(`account`,`password`,`nickname`,`role`) values('admin_1','admin','admin-1',1);
-insert  into `user`(`account`,`password`,`nickname`,`role`) values('admin_2','admin','admin_2',1);
-insert  into `user`(`account`,`password`,`nickname`,`phonenum`) values('100000','123456','小灰灰','17862901468');
+DROP TABLE IF EXISTS `uploadvideos`;
+
+CREATE TABLE `uploadvideos` (
+  `uv_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'videoID',
+  `uv_title` varchar(200) DEFAULT NULL COMMENT '视频标题',
+  `uv_videourl` varchar(200)  DEFAULT NULL COMMENT '视频地址',
+  `uv_thumbnailurl` varchar(200)  DEFAULT NULL COMMENT '视频缩略图地址',
+  `uv_uploadtime` DATETIME DEFAULT NULL COMMENT '视频上传时间',
+  `uid` bigint(20) NOT NULL COMMENT 'userid',
+  PRIMARY KEY (`uv_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+insert  into `users`(`account`,`password`,`nickname`,`role`) values('admin','admin','admin',1);
+insert  into `users`(`account`,`password`,`nickname`,`role`) values('admin_1','admin','admin-1',1);
+insert  into `users`(`account`,`password`,`nickname`,`role`) values('admin_2','admin','admin_2',1);
+insert  into `users`(`account`,`password`,`nickname`,`phonenum`) values('100000','123456','小灰灰','17862901468');
 
 insert  into `fans`(`fs_account`,`fs_nickname`,`fs_phonenum`,`uid`) values('admin','admin','17862901470',2);
-insert  into `attention`(`gz_account`,`gz_nickname`,`gz_phonenum`,`uid`) values('admin','admin','17862901470',2);
+insert  into `attentions`(`gz_account`,`gz_nickname`,`gz_phonenum`,`uid`) values('admin','admin','17862901470',2);
 
 insert  into `livethemes`(lt_name,`lt_islive`,`uid`) values('性感',0,1);
 insert  into `livethemes`(lt_name,`lt_islive`,`uid`) values('妖娆',0,1);

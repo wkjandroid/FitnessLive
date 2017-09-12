@@ -1,5 +1,7 @@
 package com.example.wkjee.fienesslive.manager.controller;
 
+import com.example.wkjee.fienesslive.manager.service.LoginService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,16 +22,20 @@ import java.io.InputStream;
 @Controller
 @RequestMapping("/manager")
 public class IndexController {
+
+    @Autowired
+    private LoginService loginService;
+
     /** 跳转到首页*/
     @RequestMapping("/")
     public String index(){
+        loginService.getAllUploadVideos();
         return "index";
     }
     /** 首页表单测试*/
     @RequestMapping(value = "/test")
     @ResponseBody
     public void test(@RequestParam(value = "test")MultipartFile file) throws IOException, ServletException {
-        System.out.println("-------------zhixng");
         File file1=new File("F://a.mp4");
         FileOutputStream fileOutputStream = new FileOutputStream(file1);
         byte[] bytes = file.getBytes();

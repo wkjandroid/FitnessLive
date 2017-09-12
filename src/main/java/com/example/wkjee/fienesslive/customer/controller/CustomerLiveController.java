@@ -43,6 +43,7 @@ public class CustomerLiveController {
         List<User> liveUsers = liveService.getAllLiveUserInfo();
         return JSON.toJSONString(liveUsers);
     }
+
     /**
      * 获取全部直播用户的直播风格，并返回
      */
@@ -52,6 +53,7 @@ public class CustomerLiveController {
         List<LiveTheme> liveThemes = liveService.getUserLiveThemes();
         return JSON.toJSONString(liveThemes);
     }
+
     /**
      * 添加直播用户的直播风格
      */
@@ -62,21 +64,14 @@ public class CustomerLiveController {
         List<String> themes = JSON.parseObject(livethemes, new TypeReference<List<String>>(){});
         return liveService.updateLiveUserStyle(Integer.parseInt(uid),themes);
     }
+
+    /**用户视频上传*/
     @RequestMapping(value = "/uploadRecoderVideo")
     @ResponseBody
-    public String uploadRecoderVideo(@RequestParam(value = "file")MultipartFile file ){
-        try{
-            File writefile = new File("F://a.mp4");
-            FileOutputStream outputStream = new FileOutputStream(writefile);
-            System.out.print(file.getBytes().length);
-            outputStream.write(file.getBytes());
-            outputStream.flush();
+    public String uploadRecoderVideo(@RequestParam(value = "file")MultipartFile file,@RequestParam(value = "title")String title,
+                                     @RequestParam(value = "uid")String uid,@RequestParam(value = "thumbnail")String thumbnail){
 
-            outputStream.close();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        return "";
+        return liveService.uploadUserVideos(file,title,Integer.parseInt(uid),thumbnail);
     }
 
 }

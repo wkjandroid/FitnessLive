@@ -1,5 +1,6 @@
 package com.example.wkjee.fienesslive.manager.dao;
 
+import com.example.wkjee.fienesslive.manager.domain.UploadVideo;
 import com.example.wkjee.fienesslive.manager.domain.User;
 
 import java.util.List;
@@ -22,4 +23,6 @@ public interface IUserDao {
     User queryUserByIdcard(String idcard);
     User queryUserByEmail(String email);
     User queryUserByAccountAndPassword(String account, String password);
+
+    List<UploadVideo> getAllUploadVideos();
 }
