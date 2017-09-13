@@ -87,7 +87,7 @@ public class LoginService {
     public void getAllUploadVideos() {
         List<UploadVideo> allUploadVideos = userDao.getAllUploadVideos();
         for (int i=0;i<allUploadVideos.size();i++){
-            System.out.println(allUploadVideos.get(i).getThumbnailurl());
+            System.out.println(allUploadVideos.get(i).getUploadtime());
         }
 
     }

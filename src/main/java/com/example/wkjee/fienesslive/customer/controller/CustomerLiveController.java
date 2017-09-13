@@ -74,4 +74,9 @@ public class CustomerLiveController {
         return liveService.uploadUserVideos(file,title,Integer.parseInt(uid),thumbnail);
     }
 
+    @RequestMapping(value = "/getUserUploadVideo")
+    @ResponseBody
+    public String getUserUploadVideo(@RequestParam(value = "uid")String uid){
+        return liveService.getUserUploadVideoByUid(Integer.parseInt(uid));
+    }
 }

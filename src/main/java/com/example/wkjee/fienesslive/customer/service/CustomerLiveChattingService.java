@@ -1,8 +1,10 @@
 package com.example.wkjee.fienesslive.customer.service;
 
+import com.alibaba.fastjson.JSON;
 import com.example.wkjee.fienesslive.customer.dao.CustomerDaoImp;
 import com.example.wkjee.fienesslive.customer.dao.ICustomerDao;
 import com.example.wkjee.fienesslive.manager.domain.LiveTheme;
+import com.example.wkjee.fienesslive.manager.domain.UploadVideo;
 import com.example.wkjee.fienesslive.manager.domain.User;
 import com.example.wkjee.fienesslive.tools.FileSaveTools;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,4 +63,8 @@ public class CustomerLiveChattingService {
                 uid))?"true":"failed";
     }
 
+    public String getUserUploadVideoByUid(int uid) {
+        List<UploadVideo> userUploadVideoByUid = customerDao.getUserUploadVideoByUid(uid);
+        return JSON.toJSONString(userUploadVideoByUid);
+    }
 }

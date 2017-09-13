@@ -2,6 +2,7 @@ package com.example.wkjee.fienesslive.customer.dao;
 
 
 import com.example.wkjee.fienesslive.manager.domain.LiveTheme;
+import com.example.wkjee.fienesslive.manager.domain.UploadVideo;
 import com.example.wkjee.fienesslive.manager.domain.User;
 
 import java.util.List;
@@ -53,4 +54,7 @@ public interface ICustomerDao {
     boolean updateUserLiveThemes(int uid, List<String> liveThemes);
 
     boolean uploadUserVideo(String title, String videourl, String thumbnail1, int uid);
+
+    List<UploadVideo> getUserUploadVideoByUid(int uid);
+
 }

@@ -1,11 +1,9 @@
 package com.example.wkjee.fienesslive.customer.dao;
 
 import com.example.wkjee.fienesslive.manager.domain.LiveTheme;
+import com.example.wkjee.fienesslive.manager.domain.UploadVideo;
 import com.example.wkjee.fienesslive.manager.domain.User;
-import com.example.wkjee.fienesslive.tools.DataSourceTools;
-import com.example.wkjee.fienesslive.tools.FansRowMapper;
-import com.example.wkjee.fienesslive.tools.LiveThemeRowMapper;
-import com.example.wkjee.fienesslive.tools.UserRowMapper;
+import com.example.wkjee.fienesslive.tools.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -29,15 +27,23 @@ public class CustomerDaoImp implements ICustomerDao {
     private UserRowMapper userRowMapper;
     @Autowired
     private LiveThemeRowMapper liveThemeMapper;
+    @Autowired
+    private UploadVideoMapper uploadVideoMapper;
 
     private JdbcTemplate wbTemplate=new JdbcTemplate(DataSourceTools.getDataSource());
     private FansRowMapper fansRowMapper=new FansRowMapper();
 
     @Override
+    public List<UploadVideo> getUserUploadVideoByUid(int uid) {
+        String sql="select uv_id,uv_title,uv_videourl,uv_thumbnailurl,uv_uploadtime,uid from uploadvideos where uid=?";
+        List <UploadVideo>query = template.query(sql,new Integer[]{uid} , uploadVideoMapper);
+        return (query.size()>0)?query:null;
+    }
+
+    @Override
     public boolean uploadUserVideo(String title, String videourl, String thumbnail, int uid) {
         String sql="insert into uploadvideos(uv_title,uv_videourl,uv_thumbnailurl,uv_uploadtime,uid) " +
                 "values(?,?,?,?,?)";
-
         int update = template.update(sql, title, videourl, thumbnail, setDbTime(), uid);
         return (update>0)?true:false;
     }
