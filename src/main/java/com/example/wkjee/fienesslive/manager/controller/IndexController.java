@@ -23,13 +23,10 @@ import java.io.InputStream;
 @RequestMapping("/manager")
 public class IndexController {
 
-    @Autowired
-    private LoginService loginService;
 
     /** 跳转到首页*/
     @RequestMapping("/")
     public String index(){
-        loginService.getAllUploadVideos();
         return "index";
     }
     /** 首页表单测试*/
