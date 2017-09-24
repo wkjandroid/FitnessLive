@@ -34,6 +34,13 @@ public class CustomerDaoImp implements ICustomerDao {
     private FansRowMapper fansRowMapper=new FansRowMapper();
 
     @Override
+    public User getLiveUserInfoByAccount(String account) {
+        String sql="select * from users where account=?";
+        List<User> query = template.query(sql, new String[]{account}, userRowMapper);
+        return (query.size()>0)?query.get(0):null;
+    }
+
+    @Override
     public boolean setUserLiveStatusTagByAccount(int status,String account) {
         String sql="update users set islive=? where account=?";
         return (wbTemplate.update(sql,status,account)>0)?true:false;

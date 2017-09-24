@@ -58,4 +58,7 @@ public interface ICustomerDao {
     List<UploadVideo> getUserUploadVideoByUid(int uid);
 
     boolean setUserLiveStatusTagByAccount(int status,String account);
+
+    User getLiveUserInfoByAccount(String account);
+
 }

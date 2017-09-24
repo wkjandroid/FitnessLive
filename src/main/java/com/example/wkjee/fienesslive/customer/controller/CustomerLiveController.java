@@ -43,6 +43,15 @@ public class CustomerLiveController {
         List<User> liveUsers = liveService.getAllLiveUserInfo();
         return JSON.toJSONString(liveUsers);
     }
+    /**
+     * 获取直播用户的信息，并返回
+     */
+    @RequestMapping(value = "/getLiveUserInfo")
+    @ResponseBody
+    public String getLiveUserInfo(@RequestParam(value = "account")String account) {
+        User liveUser = liveService.getLiveUserByAccount(account);
+        return JSON.toJSONString(liveUser);
+    }
 
     /**
      * 获取全部直播用户的直播风格，并返回

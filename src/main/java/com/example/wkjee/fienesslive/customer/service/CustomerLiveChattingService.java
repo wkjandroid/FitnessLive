@@ -77,4 +77,8 @@ public class CustomerLiveChattingService {
     public void setLiveStatusClosed(String account) {
         wsCustomerDao.setUserLiveStatusTagByAccount(0,account);
     }
+
+    public User getLiveUserByAccount(String account) {
+        return customerDao.getLiveUserInfoByAccount(account);
+    }
 }

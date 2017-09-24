@@ -55,7 +55,8 @@ public class CountWebSocketHandler extends TextWebSocketHandler {
             sessionMap.put(livePersonInfo[2],createMap);
             if (customerLiveChattingService.setUserLiveStatusTagByAccount(1,livePersonInfo[2]))
             {
-                sendFansMsg(session, livePersonInfo[2]);
+                sendFansMsg(livePersonInfo[2]);
+                sendWatcherSize(livePersonInfo[2]);
             }
             session.sendMessage(new TextMessage("success"));
         }else if (livePersonInfo[4].contentEquals("watchlive")){    //观看直播
@@ -63,41 +64,51 @@ public class CountWebSocketHandler extends TextWebSocketHandler {
             if (null==createMap) {
                 session.sendMessage(new TextMessage("liveclosed"));
             } else {
-                System.out.println("-------createmapsize=" + createMap.size());
                 createMap.put(livePersonInfo[3], session);
                 sessionMap.put(livePersonInfo[2], createMap);
-                System.out.println("-------createmapsize=" + createMap.size());
                 session.sendMessage(new TextMessage("success"));
-                sendFansMsg(session, livePersonInfo[2]);
+                sendFansMsg(livePersonInfo[2]);
+                sendWatcherSize(livePersonInfo[2]);
             }
         }
     }
-    /** 发送粉丝的数量有bug*/
-    public void sendFansMsg(WebSocketSession session, String account) throws IOException {
+    /** 发送观看者的数量有 */
+    public void sendWatcherSize(String account){
+        try {
+            StringBuilder builder=new StringBuilder();
+            transSendMessage(builder.append(sessionMap.get(account).size()).toString(),account);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    /** 发送粉丝的数量有 */
+    public void sendFansMsg(String account) throws IOException {
         LiveChattingMessage fansNumMsg=new LiveChattingMessage();
         try{
-            int number=customerLiveChattingService.wsGetFansNumberByAccount(account);
-            fansNumMsg.setFansnumber(number);
-            fansNumMsg.setIntent(2);
+//            int number=customerLiveChattingService.wsGetFansNumberByAccount(account);
+//            fansNumMsg.setFansnumber(number);
+//            fansNumMsg.setIntent(2);
             fansNumMsg.setFrom("server");
             fansNumMsg.setMid(0);
             fansNumMsg.setTo("terminal");
-            session.sendMessage(new TextMessage(JSON.toJSONString(fansNumMsg)));
-            System.out.println("粉丝数量发送成功");
+            fansNumMsg.setIntent(3);
+            fansNumMsg.setFansnumber(sessionMap.get(account).size());
+            System.out.println("粉丝数量发送成功"+JSON.toJSONString(fansNumMsg));
+            transSendMessage(JSON.toJSONString(fansNumMsg),account);
+            System.out.println("粉丝数量发送成功"+sessionMap.get(account).size());
         }catch (Exception e){
             e.printStackTrace();
         }
     }
-
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         String[] dirs = session.getUri().getPath().split("/");
         if (null!=sessionMap.get(dirs[2]))
         {
             if (dirs[2].contentEquals(dirs[3])){    //直播员连接关闭
+                customerLiveChattingService.setUserLiveStatusTagByAccount(0,dirs[2]);
                 sessionMap.remove(dirs[2]);
             }else { //观众连接关闭
-                customerLiveChattingService.setUserLiveStatusTagByAccount(0,dirs[2]);
                 sessionMap.get(dirs[2]).remove(dirs[3]);
             }
         }
@@ -107,7 +118,6 @@ public class CountWebSocketHandler extends TextWebSocketHandler {
     private void transSendMessage(String str, String name) throws IOException {
         Map<String, WebSocketSession> createMap = sessionMap.get(name);
         Collection<WebSocketSession> values = createMap.values();
-        System.out.println("name="+name+values.size());
         for (WebSocketSession session:values){
             session.sendMessage(new TextMessage(str));
         }
