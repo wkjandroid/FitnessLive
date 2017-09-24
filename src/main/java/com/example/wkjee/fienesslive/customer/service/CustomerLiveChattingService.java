@@ -29,10 +29,12 @@ public class CustomerLiveChattingService {
     ICustomerDao customerDao;
     @Autowired
     private  Environment env;
+    private String userLiveTag;
+    /** 获取直播用户的粉丝数 */
     public int wsGetFansNumberByAccount(String account) {
         return wsCustomerDao.getFansNumberByAccount(account);
     }
-
+    /** 获取全部直播用户*/
     public List<User> getAllLiveUserInfo() {
         return customerDao.getAllLiveUserInfos();
     }
@@ -62,9 +64,17 @@ public class CustomerLiveChattingService {
                 env.getProperty("get_img_url")+"/img/media/pic/"+uid+uuid.toString()+".jpg",
                 uid))?"true":"failed";
     }
-
+    /** 获取用纸上传的视频通过用户id*/
     public String getUserUploadVideoByUid(int uid) {
         List<UploadVideo> userUploadVideoByUid = customerDao.getUserUploadVideoByUid(uid);
         return JSON.toJSONString(userUploadVideoByUid);
+    }
+    /** 更新用户直播状态*/
+    public boolean setUserLiveStatusTagByAccount(int status,String account) {
+        return wsCustomerDao.setUserLiveStatusTagByAccount(status,account);
+    }
+    /** 将直播状态关闭*/
+    public void setLiveStatusClosed(String account) {
+        wsCustomerDao.setUserLiveStatusTagByAccount(0,account);
     }
 }

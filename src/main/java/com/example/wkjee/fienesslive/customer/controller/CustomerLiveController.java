@@ -79,4 +79,10 @@ public class CustomerLiveController {
     public String getUserUploadVideo(@RequestParam(value = "uid")String uid){
         return liveService.getUserUploadVideoByUid(Integer.parseInt(uid));
     }
+    @RequestMapping(value = "/closeLiveStatus")
+    @ResponseBody
+    public void closeLiveStatus(@RequestParam(value = "account")String account){
+       liveService.setLiveStatusClosed(account);
+    }
+
 }

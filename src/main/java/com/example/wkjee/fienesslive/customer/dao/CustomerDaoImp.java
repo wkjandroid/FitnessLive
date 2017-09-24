@@ -34,6 +34,12 @@ public class CustomerDaoImp implements ICustomerDao {
     private FansRowMapper fansRowMapper=new FansRowMapper();
 
     @Override
+    public boolean setUserLiveStatusTagByAccount(int status,String account) {
+        String sql="update users set islive=? where account=?";
+        return (wbTemplate.update(sql,status,account)>0)?true:false;
+    }
+
+    @Override
     public List<UploadVideo> getUserUploadVideoByUid(int uid) {
         String sql="select uv_id,uv_title,uv_videourl,uv_thumbnailurl,uv_uploadtime,uid from uploadvideos where uid=?";
         List <UploadVideo>query = template.query(sql,new Integer[]{uid} , uploadVideoMapper);
@@ -118,7 +124,7 @@ public class CustomerDaoImp implements ICustomerDao {
 
     @Override
     public List<User> getAllLiveUserInfos() {
-        String sql = "select * from users where islive=0";
+        String sql = "select * from users where islive=1";
         List<User> query = template.query(sql, userRowMapper);
         return (query.size()>0)?query:null;
     }

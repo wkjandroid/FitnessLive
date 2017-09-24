@@ -33,7 +33,7 @@ public class IndexController {
     @RequestMapping(value = "/test")
     @ResponseBody
     public void test(@RequestParam(value = "test")MultipartFile file) throws IOException, ServletException {
-        File file1=new File("F://a.mp4");
+        File file1=new File("F://a.jpg");
         FileOutputStream fileOutputStream = new FileOutputStream(file1);
         byte[] bytes = file.getBytes();
             fileOutputStream.write(bytes);

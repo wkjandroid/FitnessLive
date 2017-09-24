@@ -81,13 +81,13 @@ insert  into `users`(`account`,`password`,`nickname`,`phonenum`) values('100000'
 insert  into `fans`(`fs_account`,`fs_nickname`,`fs_phonenum`,`uid`) values('admin','admin','17862901470',2);
 insert  into `attentions`(`gz_account`,`gz_nickname`,`gz_phonenum`,`uid`) values('admin','admin','17862901470',2);
 
-insert  into `livethemes`(lt_name,`lt_islive`,`uid`) values('性感',0,1);
-insert  into `livethemes`(lt_name,`lt_islive`,`uid`) values('妖娆',0,1);
-insert  into `livethemes`(lt_name,`lt_islive`,`uid`) values('妩媚',0,1);
-insert  into `livethemes`(lt_name,`lt_islive`,`uid`) values('端庄',0,2);
-insert  into `livethemes`(lt_name,`lt_islive`,`uid`) values('大方',0,2);
-insert  into `livethemes`(lt_name,`lt_islive`,`uid`) values('端庄',0,3);
-insert  into `livethemes`(lt_name,`lt_islive`,`uid`) values('大方',0,3);
-insert  into `livethemes`(lt_name,`lt_islive`,`uid`) values('性感',0,4);
-insert  into `livethemes`(lt_name,`lt_islive`,`uid`) values('妖娆',0,4);
-insert  into `livethemes`(lt_name,`lt_islive`,`uid`) values('妩媚',0,4);
+insert  into `livethemes`(lt_name,`lt_islive`,`uid`) values('足球',0,1);
+insert  into `livethemes`(lt_name,`lt_islive`,`uid`) values('篮球',0,1);
+insert  into `livethemes`(lt_name,`lt_islive`,`uid`) values('羽毛球',0,1);
+insert  into `livethemes`(lt_name,`lt_islive`,`uid`) values('太极',0,2);
+insert  into `livethemes`(lt_name,`lt_islive`,`uid`) values('螳螂拳',0,2);
+insert  into `livethemes`(lt_name,`lt_islive`,`uid`) values('形意拳',0,3);
+insert  into `livethemes`(lt_name,`lt_islive`,`uid`) values('八卦掌',0,3);
+insert  into `livethemes`(lt_name,`lt_islive`,`uid`) values('排球',0,4);
+insert  into `livethemes`(lt_name,`lt_islive`,`uid`) values('手球',0,4);
+insert  into `livethemes`(lt_name,`lt_islive`,`uid`) values('体操',0,4);
