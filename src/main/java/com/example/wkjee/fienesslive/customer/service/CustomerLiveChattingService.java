@@ -77,8 +77,16 @@ public class CustomerLiveChattingService {
     public void setLiveStatusClosed(String account) {
         wsCustomerDao.setUserLiveStatusTagByAccount(0,account);
     }
-
+    /** 获取直播用户的信息*/
     public User getLiveUserByAccount(String account) {
         return customerDao.getLiveUserInfoByAccount(account);
+    }
+    /** 获取直播用户的头像*/
+    public String wsGetLiveUserAmatarByAccount(String account) {
+        return wsCustomerDao.wsGetLiveUserAmatarByAccount(account);
+    }
+    /** 通过账户获取观众的信息*/
+    public List<User> wsGetWatcherInfoByAccount(String account) {
+        return wsCustomerDao.wsGetWatcherInfoByAccount(account);
     }
 }

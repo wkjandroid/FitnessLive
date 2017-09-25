@@ -4,13 +4,17 @@ import com.alibaba.fastjson.JSON;
 import com.example.wkjee.fienesslive.FitnessliveApplication;
 import com.example.wkjee.fienesslive.conf.LiveChattingMessage;
 import com.example.wkjee.fienesslive.customer.service.CustomerLiveChattingService;
+import com.example.wkjee.fienesslive.manager.domain.User;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
+
+import javax.jws.soap.SOAPBinding;
 import java.io.IOException;
 import java.util.*;
+
 /**
  * 该websocket主要是用来控制直播消息的连接，进行直播用户管理
  */
@@ -20,6 +24,7 @@ public class CountWebSocketHandler extends TextWebSocketHandler {
     private static long count = 0;
     //存放直播用户和观众会话
     private static Map<String,Map<String,WebSocketSession>> sessionMap = FitnessliveApplication.sessionMap;
+    private static Map<String,List<User>> watchUserinfo=FitnessliveApplication.watchUserInfo;
     //处理分发直播间的评论信息
     //用户直播聊天服务
     private CustomerLiveChattingService customerLiveChattingService=new CustomerLiveChattingService();
@@ -55,50 +60,58 @@ public class CountWebSocketHandler extends TextWebSocketHandler {
             sessionMap.put(livePersonInfo[2],createMap);
             if (customerLiveChattingService.setUserLiveStatusTagByAccount(1,livePersonInfo[2]))
             {
-                sendFansMsg(livePersonInfo[2]);
-                sendWatcherSize(livePersonInfo[2]);
+                List<User> users=new ArrayList<>();
+                watchUserinfo.put(livePersonInfo[2],users);
+                String senderMessage = createSenderMessage("",
+                        2,customerLiveChattingService.wsGetFansNumberByAccount(livePersonInfo[2]));
+                session.sendMessage(new TextMessage(senderMessage));
+                senderMessage = createSenderMessage("", 3,
+                        sessionMap.get(livePersonInfo[2]).size());
+                session.sendMessage(new TextMessage(senderMessage));
             }
             session.sendMessage(new TextMessage("success"));
         }else if (livePersonInfo[4].contentEquals("watchlive")){    //观看直播
-            Map<String,WebSocketSession> createMap=sessionMap.get(livePersonInfo[2]);   //获取直播用户的全部观看session
+            Map<String,WebSocketSession> createMap=sessionMap.get(livePersonInfo[2]);
+            //获取直播用户的全部观看session
             if (null==createMap) {
                 session.sendMessage(new TextMessage("liveclosed"));
             } else {
                 createMap.put(livePersonInfo[3], session);
                 sessionMap.put(livePersonInfo[2], createMap);
                 session.sendMessage(new TextMessage("success"));
-                sendFansMsg(livePersonInfo[2]);
-                sendWatcherSize(livePersonInfo[2]);
+                sendLiveInfo(livePersonInfo[2]);
+                //将观众添加到map中存储，然后发送list数据到前台进行展示
+                User watchUser= customerLiveChattingService.wsGetWatcherInfoByAccount(livePersonInfo[3]).get(0);
+                List<User> users = watchUserinfo.get(livePersonInfo[2]);
+                users.add(watchUser);
+                watchUserinfo.put(livePersonInfo[2],users);
+                transSendMessage(JSON.toJSONString(users),livePersonInfo[2]);
             }
         }
     }
-    /** 发送观看者的数量有 */
-    public void sendWatcherSize(String account){
-        try {
-            StringBuilder builder=new StringBuilder();
-            transSendMessage(builder.append(sessionMap.get(account).size()).toString(),account);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    /** 发送粉丝的数量有 */
-    public void sendFansMsg(String account) throws IOException {
+    /** 创建要发送的信息*/
+    public String createSenderMessage(String content ,int intent, int fansnumber ){
         LiveChattingMessage fansNumMsg=new LiveChattingMessage();
-        try{
-//            int number=customerLiveChattingService.wsGetFansNumberByAccount(account);
-//            fansNumMsg.setFansnumber(number);
-//            fansNumMsg.setIntent(2);
-            fansNumMsg.setFrom("server");
-            fansNumMsg.setMid(0);
-            fansNumMsg.setTo("terminal");
-            fansNumMsg.setIntent(3);
-            fansNumMsg.setFansnumber(sessionMap.get(account).size());
-            System.out.println("粉丝数量发送成功"+JSON.toJSONString(fansNumMsg));
-            transSendMessage(JSON.toJSONString(fansNumMsg),account);
-            System.out.println("粉丝数量发送成功"+sessionMap.get(account).size());
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        fansNumMsg.setFrom("server");
+        fansNumMsg.setMid(0);
+        fansNumMsg.setTo("terminal");
+        fansNumMsg.setIntent(intent);
+        fansNumMsg.setContent(content);
+        fansNumMsg.setFansnumber(fansnumber);
+        return JSON.toJSONString( fansNumMsg );
+    }
+    /** 当观众加入后，发送粉丝观众的数量 */
+    public void sendLiveInfo(String account) throws IOException {
+        String senderMessage = createSenderMessage("",
+                2,customerLiveChattingService.wsGetFansNumberByAccount(account));
+        transSendMessage(senderMessage,account);
+        senderMessage = createSenderMessage("", 3,
+                sessionMap.get(account).size());
+        transSendMessage(senderMessage,account);
+        /** 设置用户头像*/
+        senderMessage = createSenderMessage(customerLiveChattingService.wsGetLiveUserAmatarByAccount(account), 4,
+                sessionMap.get(account).size());
+        transSendMessage(senderMessage,account);
     }
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {

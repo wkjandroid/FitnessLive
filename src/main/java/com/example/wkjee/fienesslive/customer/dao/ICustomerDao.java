@@ -61,4 +61,7 @@ public interface ICustomerDao {
 
     User getLiveUserInfoByAccount(String account);
 
+    String wsGetLiveUserAmatarByAccount(String account);
+
+    List<User> wsGetWatcherInfoByAccount(String account);
 }

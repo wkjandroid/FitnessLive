@@ -32,6 +32,21 @@ public class CustomerDaoImp implements ICustomerDao {
 
     private JdbcTemplate wbTemplate=new JdbcTemplate(DataSourceTools.getDataSource());
     private FansRowMapper fansRowMapper=new FansRowMapper();
+    private UserRowMapper wbUserRowMapper=new UserRowMapper();
+
+    @Override
+    public List<User> wsGetWatcherInfoByAccount(String account) {
+        String sql="SELECT * FROM users WHERE account=?";
+        List <User> query = wbTemplate.query(sql,new String []{account}, wbUserRowMapper);
+        return (query.size()>0)?query:null;
+    }
+
+    @Override
+    public String wsGetLiveUserAmatarByAccount(String account) {
+        String sql="SELECT * FROM users WHERE account=?";
+        List <User> query = wbTemplate.query(sql,new String []{account}, wbUserRowMapper);
+        return (query.size()>0)?query.get(0).getAmatar():"";
+    }
 
     @Override
     public User getLiveUserInfoByAccount(String account) {
@@ -138,9 +153,10 @@ public class CustomerDaoImp implements ICustomerDao {
 
     @Override
     public int getFansNumberByAccount(String account) {
-        String sql="SELECT * FROM fans WHERE fs_account=?";
-        List query = wbTemplate.query(sql,new String []{account}, fansRowMapper);
-        return (query.size()>0)?query.size():0;
+        String sql="SELECT * FROM users WHERE account=?";
+        List <User> query = wbTemplate.query(sql,new String []{account}, wbUserRowMapper);
+        System.out.println("--------"+query.get(0).getAccount());
+        return (query.size()>0)?query.get(0).getFansnum():0;
     }
 
     @Override
