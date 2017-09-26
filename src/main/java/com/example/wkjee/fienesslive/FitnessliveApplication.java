@@ -20,6 +20,5 @@ public class FitnessliveApplication {
 	//存放直播用户和观众会话
 	public static Map<String,Map<String,WebSocketSession>> sessionMap = new HashMap();
 	//存放观众信息
-	public static Map<String,List<User>> watchUserInfo = new HashMap();
-	public static String name="xiaowang";
+	public static Map<String,Map<String ,User>> watchUserInfo = new HashMap();
 }

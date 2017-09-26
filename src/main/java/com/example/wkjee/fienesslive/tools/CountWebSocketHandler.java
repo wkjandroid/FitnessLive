@@ -24,7 +24,7 @@ public class CountWebSocketHandler extends TextWebSocketHandler {
     private static long count = 0;
     //存放直播用户和观众会话
     private static Map<String,Map<String,WebSocketSession>> sessionMap = FitnessliveApplication.sessionMap;
-    private static Map<String,List<User>> watchUserinfo=FitnessliveApplication.watchUserInfo;
+    private static Map<String,Map<String , User>> watchUserinfo=FitnessliveApplication.watchUserInfo;
     //处理分发直播间的评论信息
     //用户直播聊天服务
     private CustomerLiveChattingService customerLiveChattingService=new CustomerLiveChattingService();
@@ -60,8 +60,6 @@ public class CountWebSocketHandler extends TextWebSocketHandler {
             sessionMap.put(livePersonInfo[2],createMap);
             if (customerLiveChattingService.setUserLiveStatusTagByAccount(1,livePersonInfo[2]))
             {
-                List<User> users=new ArrayList<>();
-                watchUserinfo.put(livePersonInfo[2],users);
                 String senderMessage = createSenderMessage("",
                         2,customerLiveChattingService.wsGetFansNumberByAccount(livePersonInfo[2]));
                 session.sendMessage(new TextMessage(senderMessage));
@@ -69,6 +67,8 @@ public class CountWebSocketHandler extends TextWebSocketHandler {
                         sessionMap.get(livePersonInfo[2]).size());
                 session.sendMessage(new TextMessage(senderMessage));
             }
+            Map<String,User> usersMap = new HashMap<>();
+            watchUserinfo.put(livePersonInfo[2],usersMap);
             session.sendMessage(new TextMessage("success"));
         }else if (livePersonInfo[4].contentEquals("watchlive")){    //观看直播
             Map<String,WebSocketSession> createMap=sessionMap.get(livePersonInfo[2]);
@@ -82,10 +82,10 @@ public class CountWebSocketHandler extends TextWebSocketHandler {
                 sendLiveInfo(livePersonInfo[2]);
                 //将观众添加到map中存储，然后发送list数据到前台进行展示
                 User watchUser= customerLiveChattingService.wsGetWatcherInfoByAccount(livePersonInfo[3]).get(0);
-                List<User> users = watchUserinfo.get(livePersonInfo[2]);
-                users.add(watchUser);
+                Map<String,User> users = watchUserinfo.get(livePersonInfo[2]);
+                users.put(livePersonInfo[3],watchUser);
                 watchUserinfo.put(livePersonInfo[2],users);
-                transSendMessage(JSON.toJSONString(users),livePersonInfo[2]);
+                transSendMessage(JSON.toJSONString(users.values()),livePersonInfo[2]);
             }
         }
     }
@@ -102,27 +102,41 @@ public class CountWebSocketHandler extends TextWebSocketHandler {
     }
     /** 当观众加入后，发送粉丝观众的数量 */
     public void sendLiveInfo(String account) throws IOException {
-        String senderMessage = createSenderMessage("",
-                2,customerLiveChattingService.wsGetFansNumberByAccount(account));
+        String senderMessage = createSenderMessage("",2,customerLiveChattingService.wsGetFansNumberByAccount(account));
         transSendMessage(senderMessage,account);
-        senderMessage = createSenderMessage("", 3,
-                sessionMap.get(account).size());
+        senderMessage = createSenderMessage("", 3,sessionMap.get(account).size());
         transSendMessage(senderMessage,account);
         /** 设置用户头像*/
         senderMessage = createSenderMessage(customerLiveChattingService.wsGetLiveUserAmatarByAccount(account), 4,
                 sessionMap.get(account).size());
         transSendMessage(senderMessage,account);
     }
+
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         String[] dirs = session.getUri().getPath().split("/");
         if (null!=sessionMap.get(dirs[2]))
         {
-            if (dirs[2].contentEquals(dirs[3])){    //直播员连接关闭
+            if (dirs[2].contentEquals(dirs[3])){
+                //直播员连接关闭
                 customerLiveChattingService.setUserLiveStatusTagByAccount(0,dirs[2]);
+                /* 将直播用户的会话删除*/
                 sessionMap.remove(dirs[2]);
+                //直播用户的观众信息删除
+                watchUserinfo.remove(dirs[2]);
             }else { //观众连接关闭
                 sessionMap.get(dirs[2]).remove(dirs[3]);
+                /** 将退出观众的直播信息删除 */
+                Map<String, User> userMap = watchUserinfo.get(dirs[2]);
+                if (null!=userMap && userMap.size()>0){
+                    userMap.remove(dirs[3]);
+                    watchUserinfo.put(dirs[2],userMap);
+                    /** 将当前在线人数发送给客户端*/
+                    transSendMessage(JSON.toJSONString(
+                            createSenderMessage("",3,sessionMap.get(dirs[2]).size())),dirs[2]);
+                    /** 将改变的观众信息发送到客户端进行更新*/
+                    transSendMessage(JSON.toJSONString(userMap.values()),dirs[2]);
+                }
             }
         }
         System.out.println("-------连接关闭"+sessionMap.size());
