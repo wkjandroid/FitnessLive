@@ -11,7 +11,6 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import javax.jws.soap.SOAPBinding;
 import java.io.IOException;
 import java.util.*;
 
@@ -63,8 +62,8 @@ public class CountWebSocketHandler extends TextWebSocketHandler {
                 String senderMessage = createSenderMessage("",
                         2,customerLiveChattingService.wsGetFansNumberByAccount(livePersonInfo[2]));
                 session.sendMessage(new TextMessage(senderMessage));
-                senderMessage = createSenderMessage("", 3,
-                        sessionMap.get(livePersonInfo[2]).size());
+                /*senderMessage = createSenderMessage("", 3,
+                        sessionMap.get(livePersonInfo[2]).size());*/
                 session.sendMessage(new TextMessage(senderMessage));
             }
             Map<String,User> usersMap = new HashMap<>();
@@ -104,10 +103,10 @@ public class CountWebSocketHandler extends TextWebSocketHandler {
     public void sendLiveInfo(String account) throws IOException {
         String senderMessage = createSenderMessage("",2,customerLiveChattingService.wsGetFansNumberByAccount(account));
         transSendMessage(senderMessage,account);
-        senderMessage = createSenderMessage("", 3,sessionMap.get(account).size());
-        transSendMessage(senderMessage,account);
+       /* senderMessage = createSenderMessage("", 3,sessionMap.get(account).size());
+        transSendMessage(senderMessage,account);*/
         /** 设置用户头像*/
-        senderMessage = createSenderMessage(customerLiveChattingService.wsGetLiveUserAmatarByAccount(account), 4,
+        senderMessage = createSenderMessage(customerLiveChattingService.wsGetLiveUserAmatarByAccount(account), 3,
                 sessionMap.get(account).size());
         transSendMessage(senderMessage,account);
     }
